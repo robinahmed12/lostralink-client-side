@@ -19,7 +19,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-[#F4A261] shadow-md">
+    <nav className="bg-[#F4A261] py-2 shadow-md">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Mobile menu button */}
@@ -48,7 +48,7 @@ const Navbar = () => {
             >
               Home
             </NavLink>
-             <NavLink
+             {/* <NavLink
               to="/"
               className={({ isActive }) =>
                 `px-3 py-2 rounded-md text-sm font-medium ${
@@ -72,9 +72,9 @@ const Navbar = () => {
               }
             >
               Services
-            </NavLink>
+            </NavLink> */}
 
-            {/* {users && (
+            {users && (
               <>
                 <NavLink
                   to="/add-item"
@@ -113,7 +113,7 @@ const Navbar = () => {
                   Manage My Items
                 </NavLink>
               </>
-            )} */}
+            )}
           </div>
 
           {/* Auth Section */}

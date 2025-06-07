@@ -1,35 +1,64 @@
-import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaGoogle, FaGithub, FaEnvelope, FaLock } from 'react-icons/fa';
-import { AuthContext } from '../context/AuthContext';
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import { FaGoogle, FaGithub, FaEnvelope, FaLock } from "react-icons/fa";
+import { AuthContext } from "../context/AuthContext";
+import { Bounce, toast } from "react-toastify";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const {signInUser , setUser} = useContext(AuthContext)
+  const [error, setError] = useState("");
+  const { signInUser, setUser, signInWithGoogle } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
-// login....
-signInUser(email , password).then(result => {
- const user = result.user
- setUser(user)
-  
-}).catch(error =>{
-  console.log(error.message);
-  
-})
-    
+    // login....
+    signInUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
-  const handleSocialLogin = (provider) => {
-    console.log(`Logging in with ${provider}`);
-    // Implement social login logic here
+  const handleSocialLogin = () => {
+    signInWithGoogle()
+      .then((result) => {
+        setUser(result.user);
+        toast.success("Google sign-in successful", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      })
+      .then((response) => response.json())
+
+      .catch((error) => {
+        console.error("Google Sign-In Error:", error);
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      });
   };
 
   return (
@@ -37,19 +66,24 @@ signInUser(email , password).then(result => {
       <div className="w-full max-w-md">
         <div className="bg-[#F0EAD6] rounded-lg shadow-lg overflow-hidden p-8 transition-all duration-300 hover:shadow-xl">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#3E2F1C] mb-2">Welcome Back</h1>
+            <h1 className="text-3xl font-bold text-[#3E2F1C] mb-2">
+              Welcome Back
+            </h1>
             <p className="text-[#9A8C7A]">Log in to your account to continue</p>
           </div>
-          
+
           {error && (
             <div className="bg-[#E76F51] text-white p-3 rounded-md mb-4 text-center">
               {error}
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-[#3E2F1C] mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-[#3E2F1C] mb-1"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -69,9 +103,12 @@ signInUser(email , password).then(result => {
                 />
               </div>
             </div>
-            
+
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-[#3E2F1C] mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-[#3E2F1C] mb-1"
+              >
                 Password
               </label>
               <div className="relative">
@@ -91,7 +128,7 @@ signInUser(email , password).then(result => {
                 />
               </div>
             </div>
-            
+
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
@@ -100,37 +137,63 @@ signInUser(email , password).then(result => {
                   type="checkbox"
                   className="h-4 w-4 text-[#F4A261] focus:ring-[#F4A261] border-[#9A8C7A] rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-[#3E2F1C]">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-[#3E2F1C]"
+                >
                   Remember me
                 </label>
               </div>
-              
+
               <div className="text-sm">
-                <a href="#" className="font-medium text-[#2A9D8F] hover:text-[#1E7D74] transition-colors">
+                <a
+                  href="#"
+                  className="font-medium text-[#2A9D8F] hover:text-[#1E7D74] transition-colors"
+                >
                   Forgot password?
                 </a>
               </div>
             </div>
-            
+
             <div>
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#F4A261] hover:bg-[#E69150] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F4A261] transition-all duration-300 ${isLoading ? 'opacity-75 cursor-not-allowed' : ''}`}
+                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#F4A261] hover:bg-[#E69150] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F4A261] transition-all duration-300 ${
+                  isLoading ? "opacity-75 cursor-not-allowed" : ""
+                }`}
               >
                 {isLoading ? (
                   <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Signing in...
                   </span>
-                ) : 'Sign in'}
+                ) : (
+                  "Sign in"
+                )}
               </button>
             </div>
           </form>
-          
+
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -142,30 +205,25 @@ signInUser(email , password).then(result => {
                 </span>
               </div>
             </div>
-            
-            <div className="mt-6 grid grid-cols-2 gap-3">
+
+            <div className="mt-6 grid grid-cols-1 gap-3">
               <button
-                onClick={() => handleSocialLogin('google')}
+                onClick={() => handleSocialLogin("google")}
                 className="w-full inline-flex justify-center py-2 px-4 border border-[#9A8C7A] rounded-md shadow-sm bg-white text-sm font-medium text-[#3E2F1C] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F4A261] transition-all duration-300"
               >
                 <FaGoogle className="h-5 w-5 text-[#DB4437]" />
                 <span className="ml-2">Google</span>
               </button>
-              
-              <button
-                onClick={() => handleSocialLogin('github')}
-                className="w-full inline-flex justify-center py-2 px-4 border border-[#9A8C7A] rounded-md shadow-sm bg-white text-sm font-medium text-[#3E2F1C] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F4A261] transition-all duration-300"
-              >
-                <FaGithub className="h-5 w-5 text-[#333]" />
-                <span className="ml-2">GitHub</span>
-              </button>
             </div>
           </div>
-          
+
           <div className="mt-6 text-center">
             <p className="text-sm text-[#9A8C7A]">
-              Don't have an account?{' '}
-              <Link to="/register" className="font-medium text-[#2A9D8F] hover:text-[#1E7D74] transition-colors">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="font-medium text-[#2A9D8F] hover:text-[#1E7D74] transition-colors"
+              >
                 Register here
               </Link>
             </p>

@@ -2,9 +2,10 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
+import { Bounce, toast } from "react-toastify";
 
 const Register = () => {
-  const {createUser , setUser , updateUserProfile}= useContext(AuthContext)
+  const { createUser, setUser, updateUserProfile } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -12,8 +13,6 @@ const Register = () => {
     password: "",
     photoURL: "",
   });
-
-  
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,11 +42,8 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const {email , password , name , photoURL,} = formData
-  console.log(name , photoURL);
-  
-  
-  
+  const { email, password, name, photoURL } = formData;
+  console.log(name, photoURL);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,23 +57,62 @@ const Register = () => {
       }, 1500);
     }
 
-    createUser(email , password)
-    .then(result =>{
-     const user = result.user
-     setUser(user)
+    const RegExpLower = /[a-z]/;
+    const RegExpUpper = /[A-Z]/;
+    const RegExpLength = /^.{6,}$/;
 
-    //  user update profile
-    updateUserProfile({displayName : name , photoURL: photoURL })
-    .then(()=> {
-      setUser({...user , displayName : name , photoURL: photoURL})
-    })
-    
+    if (!RegExpLower.test(password)) {
+      toast.error("Must have a lowercase letter in the password");
+      return;
+    }
+    if (!RegExpUpper.test(password)) {
+      toast.error("Must have an uppercase letter in the password");
+      return;
+    }
+    if (!RegExpLength.test(password)) {
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+         setUser(user);
+        if (user) {
+          toast.success("🦄 Registration successful", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
+       
 
-      
-    }).catch(error => {
-      console.log(error.message);
-      
-    })
+        //  user update profile
+        updateUserProfile({ displayName: name, photoURL: photoURL }).then(
+          () => {
+            setUser({ ...user, displayName: name, photoURL: photoURL });
+          }
+        );
+      })
+      .catch((error) => {
+        console.log(error.message);
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      });
   };
 
   return (
