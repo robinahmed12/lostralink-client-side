@@ -1,28 +1,30 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaGoogle, FaGithub, FaEnvelope, FaLock } from 'react-icons/fa';
+import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const {signInUser , setUser} = useContext(AuthContext)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+
+// login....
+signInUser(email , password).then(result => {
+ const user = result.user
+ setUser(user)
+  
+}).catch(error =>{
+  console.log(error.message);
+  
+})
     
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Login attempt with:', { email, password });
-      // In a real app, you would handle authentication here
-    } catch (err) {
-      setError('Invalid email or password. Please try again.', err);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const handleSocialLogin = (provider) => {

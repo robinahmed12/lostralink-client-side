@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { AuthContext } from "../context/AuthContext";
 
 const Register = () => {
+  const {createUser , setUser , updateUserProfile}= useContext(AuthContext)
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     photoURL: "",
   });
+
+  
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,6 +43,12 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const {email , password , name , photoURL,} = formData
+  console.log(name , photoURL);
+  
+  
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
@@ -49,6 +60,24 @@ const Register = () => {
         // Redirect or show success message
       }, 1500);
     }
+
+    createUser(email , password)
+    .then(result =>{
+     const user = result.user
+     setUser(user)
+
+    //  user update profile
+    updateUserProfile({displayName : name , photoURL: photoURL })
+    .then(()=> {
+      setUser({...user , displayName : name , photoURL: photoURL})
+    })
+    
+
+      
+    }).catch(error => {
+      console.log(error.message);
+      
+    })
   };
 
   return (

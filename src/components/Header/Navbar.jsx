@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
-const Navbar = ({ isLoggedIn, user }) => {
+const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const {users ,  signOutUser , setUser} = useContext(AuthContext)
+  
+  
+  const handleLogOut = ()=>{
+    signOutUser()
+    .then(()=> {
+      console.log("signout successful");
+      setUser(null)
+    }).catch(error => {
+      console.log(error);
+      
+    })
+  }
 
   return (
     <nav className="bg-[#F4A261] shadow-md">
@@ -15,7 +29,7 @@ const Navbar = ({ isLoggedIn, user }) => {
                 to="/"
                 className="text-[#3E2F1C] font-bold text-xl hover:text-[#2A9D8F] transition-colors duration-300"
               >
-                Lost & Found
+                LostraLink
               </NavLink>
             </div>
           </div>
@@ -60,7 +74,7 @@ const Navbar = ({ isLoggedIn, user }) => {
               Services
             </NavLink>
 
-            {isLoggedIn && (
+            {/* {users && (
               <>
                 <NavLink
                   to="/add-item"
@@ -99,12 +113,12 @@ const Navbar = ({ isLoggedIn, user }) => {
                   Manage My Items
                 </NavLink>
               </>
-            )}
+            )} */}
           </div>
 
           {/* Auth Section */}
           <div className="flex items-center">
-            {!isLoggedIn ? (
+            {!users ? (
               <NavLink
                 to="/login"
                 className="px-4 py-2 rounded-md text-sm font-medium bg-[#3E2F1C] text-white hover:bg-[#2A9D8F] transition-colors duration-300"
@@ -120,11 +134,11 @@ const Navbar = ({ isLoggedIn, user }) => {
                   <div className="relative group">
                     <img
                       className="h-8 w-8 rounded-full object-cover border-2 border-[#3E2F1C] hover:border-[#2A9D8F] transition-all duration-300"
-                      src={user?.photoURL || "https://via.placeholder.com/32"}
+                      src={users?.photoURL || "https://via.placeholder.com/32"}
                       alt="Profile"
                     />
                     <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-[#3E2F1C] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                      {user?.displayName || "User"}
+                      {users?.displayName || "User"}
                     </span>
                   </div>
                 </button>
@@ -154,10 +168,7 @@ const Navbar = ({ isLoggedIn, user }) => {
                     </NavLink>
                     <button
                       className="block w-full text-left px-4 py-2 text-sm text-[#E76F51] hover:bg-[#E76F51] hover:text-white transition-colors duration-300"
-                      onClick={() => {
-                        // Handle logout
-                        setIsProfileOpen(false);
-                      }}
+                     onClick={handleLogOut}
                     >
                       Logout
                     </button>
@@ -198,7 +209,7 @@ const Navbar = ({ isLoggedIn, user }) => {
             Home
           </NavLink>
 
-          {isLoggedIn && (
+          {users && (
             <>
               <NavLink
                 to="/add-item"
@@ -221,7 +232,7 @@ const Navbar = ({ isLoggedIn, user }) => {
             </>
           )}
 
-          {!isLoggedIn ? (
+          {!users ? (
             <NavLink
               to="/login"
               className="block px-3 py-2 rounded-md text-base font-medium bg-[#3E2F1C] text-white hover:bg-[#2A9D8F] transition-colors duration-300"
@@ -231,9 +242,7 @@ const Navbar = ({ isLoggedIn, user }) => {
           ) : (
             <button
               className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-[#E76F51] hover:bg-[#E76F51] hover:text-white transition-colors duration-300"
-              onClick={() => {
-                // Handle logout
-              }}
+              onClick={handleLogOut}
             >
               Logout
             </button>
