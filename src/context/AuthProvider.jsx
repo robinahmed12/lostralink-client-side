@@ -14,6 +14,8 @@ import { useEffect } from "react";
 
 const AuthProvider = ({ children }) => {
   const [users, setUser] = useState(null);
+  console.log(users);
+  
 
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);

@@ -4,19 +4,18 @@ import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const {users ,  signOutUser , setUser} = useContext(AuthContext)
-  
-  
-  const handleLogOut = ()=>{
+  const { users, signOutUser, setUser } = useContext(AuthContext);
+
+  const handleLogOut = () => {
     signOutUser()
-    .then(()=> {
-      console.log("signout successful");
-      setUser(null)
-    }).catch(error => {
-      console.log(error);
-      
-    })
-  }
+      .then(() => {
+        console.log("signout successful");
+        setUser(null);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <nav className="bg-[#F4A261] py-2 shadow-md">
@@ -48,72 +47,21 @@ const Navbar = () => {
             >
               Home
             </NavLink>
-             {/* <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `px-3 py-2 rounded-md text-sm font-medium ${
-                  isActive
-                    ? "bg-[#2A9D8F] text-white"
-                    : "text-[#3E2F1C] hover:bg-[#F0EAD6] hover:text-[#3E2F1C]"
-                } transition-all duration-300`
-              }
-            >
-              About
-            </NavLink>
 
-             <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `px-3 py-2 rounded-md text-sm font-medium ${
-                  isActive
-                    ? "bg-[#2A9D8F] text-white"
-                    : "text-[#3E2F1C] hover:bg-[#F0EAD6] hover:text-[#3E2F1C]"
-                } transition-all duration-300`
-              }
-            >
-              Services
-            </NavLink> */}
-
-            {users && (
-              <>
-                <NavLink
-                  to="/add-item"
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-md text-sm font-medium ${
-                      isActive
-                        ? "bg-[#2A9D8F] text-white"
-                        : "text-[#3E2F1C] hover:bg-[#F0EAD6] hover:text-[#3E2F1C]"
-                    } transition-all duration-300`
-                  }
-                >
-                  Add Item
-                </NavLink>
-                <NavLink
-                  to="/recovered-items"
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-md text-sm font-medium ${
-                      isActive
-                        ? "bg-[#2A9D8F] text-white"
-                        : "text-[#3E2F1C] hover:bg-[#F0EAD6] hover:text-[#3E2F1C]"
-                    } transition-all duration-300`
-                  }
-                >
-                  Recovered Items
-                </NavLink>
-                <NavLink
-                  to="/manage-items"
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-md text-sm font-medium ${
-                      isActive
-                        ? "bg-[#2A9D8F] text-white"
-                        : "text-[#3E2F1C] hover:bg-[#F0EAD6] hover:text-[#3E2F1C]"
-                    } transition-all duration-300`
-                  }
-                >
-                  Manage My Items
-                </NavLink>
-              </>
-            )}
+            <>
+              <NavLink
+                to="/allItems"
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-md text-sm font-medium ${
+                    isActive
+                      ? "bg-[#2A9D8F] text-white"
+                      : "text-[#3E2F1C] hover:bg-[#F0EAD6] hover:text-[#3E2F1C]"
+                  } transition-all duration-300`
+                }
+              >
+                Lost & Found Items
+              </NavLink>
+            </>
           </div>
 
           {/* Auth Section */}
@@ -168,7 +116,7 @@ const Navbar = () => {
                     </NavLink>
                     <button
                       className="block w-full text-left px-4 py-2 text-sm text-[#E76F51] hover:bg-[#E76F51] hover:text-white transition-colors duration-300"
-                     onClick={handleLogOut}
+                      onClick={handleLogOut}
                     >
                       Logout
                     </button>

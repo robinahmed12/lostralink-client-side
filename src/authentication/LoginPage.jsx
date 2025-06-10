@@ -2,62 +2,58 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle, FaGithub, FaEnvelope, FaLock } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const { signInUser, setUser, signInWithGoogle } = useContext(AuthContext);
+  const { signInUser, signInWithGoogle } = useContext(AuthContext);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
 
-    // login....
     signInUser(email, password)
-      .then((result) => {
-        const user = result.user;
-        setUser(user);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
-
-  const handleSocialLogin = () => {
-    signInWithGoogle()
-      .then((result) => {
-        setUser(result.user);
-        toast.success("Google sign-in successful", {
+      .then(() => {
+        toast.success("Login successful!", {
           position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
+          autoClose: 3000,
         });
       })
-      .then((response) => response.json())
-
       .catch((error) => {
-        console.error("Google Sign-In Error:", error);
         toast.error(error.message, {
           position: "top-center",
           autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
         });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const handleGoogleLogin = () => {
+    setIsLoading(true);
+
+    signInWithGoogle()
+      .then(
+        (result) => {
+          console.log("Google login success:", result);
+          toast.success("Google login successful!", {
+            position: "top-center",
+            autoClose: 3000,
+          });
+        },
+        (error) => {
+          console.error("Google login failed:", error);
+          toast.error("Google login failed. Check console for error details.", {
+            position: "top-center",
+            autoClose: 5000,
+          });
+        }
+      )
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -71,12 +67,6 @@ const LoginPage = () => {
             </h1>
             <p className="text-[#9A8C7A]">Log in to your account to continue</p>
           </div>
-
-          {error && (
-            <div className="bg-[#E76F51] text-white p-3 rounded-md mb-4 text-center">
-              {error}
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -146,12 +136,12 @@ const LoginPage = () => {
               </div>
 
               <div className="text-sm">
-                <a
-                  href="#"
+                <Link
+                  to="/forgot-password"
                   className="font-medium text-[#2A9D8F] hover:text-[#1E7D74] transition-colors"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -208,8 +198,11 @@ const LoginPage = () => {
 
             <div className="mt-6 grid grid-cols-1 gap-3">
               <button
-                onClick={() => handleSocialLogin("google")}
-                className="w-full inline-flex justify-center py-2 px-4 border border-[#9A8C7A] rounded-md shadow-sm bg-white text-sm font-medium text-[#3E2F1C] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F4A261] transition-all duration-300"
+                onClick={handleGoogleLogin}
+                disabled={isLoading}
+                className={`w-full inline-flex justify-center py-2 px-4 border border-[#9A8C7A] rounded-md shadow-sm bg-white text-sm font-medium text-[#3E2F1C] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F4A261] transition-all duration-300 ${
+                  isLoading ? "opacity-75 cursor-not-allowed" : ""
+                }`}
               >
                 <FaGoogle className="h-5 w-5 text-[#DB4437]" />
                 <span className="ml-2">Google</span>

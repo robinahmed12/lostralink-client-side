@@ -2,257 +2,138 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import Lottie from "lottie-react";
+import loadingAnimation from "../assets/Animation - 1749544429039.json";
+import successAnimation from "../assets/Animation - 1749544944960.json";
 
 const Register = () => {
-  const { createUser, setUser, updateUserProfile } = useContext(AuthContext);
-
+  const { createUser, updateUserProfile } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    photoURL: "",
+    photoURL: ""
   });
-
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
-    }
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const validatePassword = (password) => {
+    const errors = [];
+    if (!/[a-z]/.test(password)) errors.push("lowercase letter");
+    if (!/[A-Z]/.test(password)) errors.push("uppercase letter");
+    if (password.length < 6) errors.push("at least 6 characters");
+    return errors;
   };
-
-  const { email, password, name, photoURL } = formData;
-  console.log(name, photoURL);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validate()) {
-      setIsSubmitting(true);
-      // Simulate API call
-      setTimeout(() => {
-        console.log("Registration data:", formData);
-        setIsSubmitting(false);
-        // Redirect or show success message
-      }, 1500);
+    const { name, email, password, photoURL } = formData;
+
+    // Password validation
+    const passwordErrors = validatePassword(password);
+    if (passwordErrors.length > 0) {
+      toast.error(`Password must contain: ${passwordErrors.join(", ")}`);
+      return;
     }
 
-    const RegExpLower = /[a-z]/;
-    const RegExpUpper = /[A-Z]/;
-    const RegExpLength = /^.{6,}$/;
+    setIsLoading(true);
 
-    if (!RegExpLower.test(password)) {
-      toast.error("Must have a lowercase letter in the password");
-      return;
-    }
-    if (!RegExpUpper.test(password)) {
-      toast.error("Must have an uppercase letter in the password");
-      return;
-    }
-    if (!RegExpLength.test(password)) {
-      toast.error("Password must be at least 6 characters long");
-      return;
-    }
     createUser(email, password)
-      .then((result) => {
-        const user = result.user;
-         setUser(user);
-        if (user) {
-          toast.success("🦄 Registration successful", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-        }
-       
-
-        //  user update profile
-        updateUserProfile({ displayName: name, photoURL: photoURL }).then(
-          () => {
-            setUser({ ...user, displayName: name, photoURL: photoURL });
-          }
-        );
+      .then(({ user }) => {
+        return updateUserProfile({
+          displayName: name,
+          ...(photoURL && { photoURL })
+        }).then(() => {
+          toast.success(
+            <div className="flex items-center">
+              <Lottie 
+                animationData={successAnimation} 
+                loop={false} 
+                style={{ width: 40, height: 40 }} 
+              />
+              <span className="ml-2">Registration successful!</span>
+            </div>
+          );
+        });
       })
       .catch((error) => {
-        console.log(error.message);
-        toast.error(error.message, {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        });
+        toast.error(error.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   return (
-    <div
-      className="min-h-screen pt-20 flex items-center justify-center p-4"
-      style={{ backgroundColor: "#FFFAF0" }} // Cream White background
-    >
+    <div className="min-h-screen flex items-center justify-center bg-[#FFFAF0] p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div
-          className="p-8 rounded-lg shadow-md"
-          style={{ backgroundColor: "#F0EAD6" }} // Light Sand card background
-        >
-          <h2
-            className="text-2xl font-bold mb-6 text-center"
-            style={{ color: "#3E2F1C" }} // Cocoa Brown text
-          >
+        <div className="bg-[#F0EAD6] p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold mb-6 text-center text-[#3E2F1C]">
             Create an Account
           </h2>
 
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block mb-2 font-medium"
-                style={{ color: "#3E2F1C" }} // Cocoa Brown text
-              >
+              <label className="block mb-2 font-medium text-[#3E2F1C]">
                 Full Name
               </label>
               <input
                 type="text"
-                id="name"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 transition-all ${
-                  errors.name
-                    ? "border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-[#F4A261]/50"
-                }`}
-                style={{ backgroundColor: "#FFFAF0" }} // Cream White input background
+                required
+                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4A261]/50 bg-[#FFFAF0]"
               />
-              {errors.name && (
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-1 text-sm"
-                  style={{ color: "#E76F51" }} // Burnt Red error text
-                >
-                  {errors.name}
-                </motion.p>
-              )}
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block mb-2 font-medium"
-                style={{ color: "#3E2F1C" }} // Cocoa Brown text
-              >
-                Email Address
+              <label className="block mb-2 font-medium text-[#3E2F1C]">
+                Email
               </label>
               <input
                 type="email"
-                id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 transition-all ${
-                  errors.email
-                    ? "border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-[#F4A261]/50"
-                }`}
-                style={{ backgroundColor: "#FFFAF0" }} // Cream White input background
+                required
+                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4A261]/50 bg-[#FFFAF0]"
               />
-              {errors.email && (
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-1 text-sm"
-                  style={{ color: "#E76F51" }} // Burnt Red error text
-                >
-                  {errors.email}
-                </motion.p>
-              )}
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="block mb-2 font-medium"
-                style={{ color: "#3E2F1C" }} // Cocoa Brown text
-              >
+              <label className="block mb-2 font-medium text-[#3E2F1C]">
                 Password
               </label>
               <input
                 type="password"
-                id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 transition-all ${
-                  errors.password
-                    ? "border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-[#F4A261]/50"
-                }`}
-                style={{ backgroundColor: "#FFFAF0" }} // Cream White input background
+                required
+                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4A261]/50 bg-[#FFFAF0]"
               />
-              {errors.password && (
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-1 text-sm"
-                  style={{ color: "#E76F51" }} // Burnt Red error text
-                >
-                  {errors.password}
-                </motion.p>
-              )}
             </div>
 
             <div className="mb-6">
-              <label
-                htmlFor="photoURL"
-                className="block mb-2 font-medium"
-                style={{ color: "#3E2F1C" }} // Cocoa Brown text
-              >
+              <label className="block mb-2 font-medium text-[#3E2F1C]">
                 Profile Photo URL (Optional)
               </label>
               <input
                 type="url"
-                id="photoURL"
                 name="photoURL"
                 value={formData.photoURL}
                 onChange={handleChange}
-                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4A261]/50 transition-all"
-                style={{ backgroundColor: "#FFFAF0" }} // Cream White input background
+                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4A261]/50 bg-[#FFFAF0]"
               />
             </div>
 
@@ -260,41 +141,15 @@ const Register = () => {
               type="submit"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              disabled={isSubmitting}
-              className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${
-                isSubmitting
-                  ? "opacity-70 cursor-not-allowed"
-                  : "hover:shadow-md"
-              }`}
-              style={{
-                backgroundColor: "#F4A261", // Deep Mustard primary
-                color: "#3E2F1C", // Cocoa Brown text
-              }}
+              disabled={isLoading}
+              className="w-full py-2 px-4 rounded-md font-medium bg-[#F4A261] text-[#3E2F1C] hover:shadow-md flex justify-center items-center"
             >
-              {isSubmitting ? (
-                <span className="flex items-center justify-center">
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Registering...
-                </span>
+              {isLoading ? (
+                <Lottie 
+                  animationData={loadingAnimation} 
+                  loop={true} 
+                  style={{ width: 28, height: 28 }} 
+                />
               ) : (
                 "Register"
               )}
@@ -302,15 +157,11 @@ const Register = () => {
           </form>
 
           <div className="mt-6 text-center">
-            <p
-              className="text-sm"
-              style={{ color: "#9A8C7A" }} // Warm Taupe muted text
-            >
+            <p className="text-sm text-[#9A8C7A]">
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="font-medium hover:underline transition-all"
-                style={{ color: "#2A9D8F" }} // Forest Green accent
+                className="font-medium hover:underline text-[#2A9D8F]"
               >
                 Log in here
               </Link>
