@@ -7,6 +7,7 @@ import HowItWorks from "../../section/HowItWorks";
 import TestimonialsSection from "../../section/TestimonialsSection";
 import PostItemSection from "../../section/PostItemSection";
 import ItemDetails from "../ItemDetails";
+import RecentItems from "../RecentItems";
 
 // Animation variants
 const containerVariants = {
@@ -73,7 +74,7 @@ const Home = () => {
 
       <AnimatedSection>
         <motion.div variants={itemVariants}>
-          <ItemDetails />
+          <RecentItems />
         </motion.div>
       </AnimatedSection>
 
