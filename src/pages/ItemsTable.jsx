@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const ItemsTable = ({ item }) => {
   const { postType, title, category, description, _id } = item;
@@ -8,9 +9,9 @@ const ItemsTable = ({ item }) => {
     console.log("Delete item with id:", _id);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (id) => {
     // Implement update functionality
-    console.log("Update item with id:", _id);
+    console.log("Update item with id:", id);
   };
 
   return (
@@ -38,8 +39,8 @@ const ItemsTable = ({ item }) => {
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         <div className="flex space-x-2">
-          <button
-            onClick={handleUpdate}
+          <Link to={`/update/${_id}`}
+          onClick={handleUpdate}
             className="text-[#3E2F1C] hover:text-[#F4A261] transition-colors duration-200"
           >
             <svg
@@ -50,7 +51,7 @@ const ItemsTable = ({ item }) => {
             >
               <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
             </svg>
-          </button>
+          </Link>
           <button
             onClick={handleDelete}
             className="text-[#E76F51] hover:text-[#E76F51]/70 transition-colors duration-200"

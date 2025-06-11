@@ -9,46 +9,65 @@ import LostFoundItem from "../pages/LostFoundItem";
 import ItemDetails from "../pages/ItemDetails";
 import RecoverItem from "../pages/RecoverItem";
 import MyItems from "../pages/MyItems";
+import UpdateItem from "../pages/UpdateItem";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout/>,
+    element: <Layout />,
     children: [
-        {
-            index: true,
-            element: <Home/>
-        },
-        {
-          path: "/login",
-          element: <LoginPage/>
-        },
-        {
-          path: "/register",
-          element: <Register/>
-        },
-        {
-          path: "/add-item",
-          element: <PrivateRoutes><AddItemsPage/></PrivateRoutes>
-        },
-        {
-          path:"/recovered-items",
-          element: <RecoverItem/>
-        },
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+      {
+        path: "/add-item",
+        element: (
+          <PrivateRoutes>
+            <AddItemsPage />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "/recovered-items",
+        element: <RecoverItem />,
+      },
 
-        {
-          path: "/allItems",
-          element: <LostFoundItem/>
+      {
+        path: "/allItems",
+        element: <LostFoundItem />,
+      },
+      {
+        path: "/details/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/allItems/${params.id}`),
+        element: <ItemDetails></ItemDetails>,
+      },
+      {
+        path: "/manage-items",
+        element: <MyItems />,
+      },
+      {
+        path: "/update/:id",
+        loader: async ({ params }) => {
+          const response = await fetch(
+            `http://localhost:3000/allItems/${params.id}`
+          );
+          if (!response.ok) {
+            throw new Error("Item not found");
+          }
+          return response.json();
         },
-        {
-          path: "/details/:id",
-          loader: ({params})=> fetch(`http://localhost:3000/allItems/${params.id}`),
-          element: <ItemDetails></ItemDetails>
-        },
-        {
-          path: "/manage-items",
-          element: <MyItems/>
-        }
-    ]
+        element: <UpdateItem />,
+      },
+    ],
   },
 ]);
