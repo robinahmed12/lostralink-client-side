@@ -7,6 +7,7 @@ import AddItemsPage from "../pages/AddItemsPage ";
 import PrivateRoutes from "../privates/PrivateRoutes";
 import LostFoundItem from "../pages/LostFoundItem";
 import ItemDetails from "../pages/ItemDetails";
+import RecoverItem from "../pages/RecoverItem";
 
 export const router = createBrowserRouter([
   {
@@ -29,10 +30,10 @@ export const router = createBrowserRouter([
           path: "/add-item",
           element: <PrivateRoutes><AddItemsPage/></PrivateRoutes>
         },
-        // {
-        //   path:"/recovered-items",
-        //   element: 
-        // }
+        {
+          path:"/recovered-items",
+          element: <RecoverItem/>
+        },
 
         {
           path: "/allItems",

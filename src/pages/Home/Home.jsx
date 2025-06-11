@@ -6,6 +6,7 @@ import CategoriesSection from "../../section/CategoriesSection";
 import HowItWorks from "../../section/HowItWorks";
 import TestimonialsSection from "../../section/TestimonialsSection";
 import PostItemSection from "../../section/PostItemSection";
+import ItemDetails from "../ItemDetails";
 
 // Animation variants
 const containerVariants = {
@@ -30,8 +31,6 @@ const itemVariants = {
     },
   },
 };
-
-
 
 const scaleUp = {
   hover: { scale: 1.03, transition: { duration: 0.3 } },
@@ -69,6 +68,12 @@ const Home = () => {
       <AnimatedSection>
         <motion.div variants={itemVariants}>
           <Banner />
+        </motion.div>
+      </AnimatedSection>
+
+      <AnimatedSection>
+        <motion.div variants={itemVariants}>
+          <ItemDetails />
         </motion.div>
       </AnimatedSection>
 

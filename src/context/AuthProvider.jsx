@@ -14,24 +14,28 @@ import { useEffect } from "react";
 
 const AuthProvider = ({ children }) => {
   const [users, setUser] = useState(null);
-  console.log(users);
+  const [loading , setLoading]= useState(true)
   
 
   const createUser = (email, password) => {
+    setLoading(true)
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const signInUser = (email, password) => {
+    setLoading(true)
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   const signOutUser = () => {
+    setLoading(true)
     return signOut(auth);
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setLoading(false)
     });
 
     return () => unsubscribe();
@@ -53,7 +57,9 @@ const AuthProvider = ({ children }) => {
     signInUser,
     signOutUser,
     updateUserProfile,
-    signInWithGoogle
+    signInWithGoogle,
+    loading,
+    setLoading
   };
   return <AuthContext value={userInfo}>{children}</AuthContext>;
 };

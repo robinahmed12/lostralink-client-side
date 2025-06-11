@@ -31,7 +31,7 @@ const AllItemsCard = ({ item }) => {
                     </div>
                     
                     {/* Card Content */}
-                    <div className="p-5 flex-grow">
+                    <div className="p-5 mt-6 flex-grow">
                         <h3 className="text-xl font-bold text-[#3E2F1C] mb-2 truncate">{title}</h3>
                         
                         <div className="mb-3">

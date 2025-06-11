@@ -18,25 +18,19 @@ const LostFoundItem = () => {
             } catch (err) {
                 setError(err.message);
             } finally {
-                setLoading(false);
+                // console.log();
+                
             }
         };
 
         fetchItems();
-        
-        // Cleanup function
+    
         return () => {
-            // Cancel any ongoing requests or subscriptions
+            
         };
-    }, []); // Empty dependency array means this runs once on mount
+    }, []); 
 
-    // if (loading) {
-    //     return (
-    //         <div className="min-h-screen bg-[#FFFAF0] flex justify-center items-center">
-    //             <div className="text-[#3E2F1C] text-xl">Loading items...</div>
-    //         </div>
-    //     );
-    // }
+
 
     if (error) {
         return (

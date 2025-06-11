@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLoaderData } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useContext } from "react";
@@ -8,7 +8,10 @@ import axios from "axios";
 
 const ItemDetails = () => {
   const { users } = useContext(AuthContext);
-  const data = useLoaderData();
+  const loadedData = useLoaderData();
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
   const [recoveryData, setRecoveryData] = useState({
@@ -18,19 +21,18 @@ const ItemDetails = () => {
   const { recoveredLocation, recoveredDate } = recoveryData;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isRecovered, setIsRecovered] = useState(data.status === "recovered");
+  const [isRecovered, setIsRecovered] = useState(false);
 
-  const {
-    postType,
-    title,
-    category,
-    location,
-    date,
-    thumbnail,
-    description,
-    contactName,
-    contactEmail,
-  } = data;
+  useEffect(() => {
+    if (loadedData) {
+      setData(loadedData);
+      setIsRecovered(loadedData.status === "recovered");
+      setLoading(false);
+    } else {
+      setError("Item data not found");
+      setLoading(false);
+    }
+  }, [loadedData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -47,33 +49,73 @@ const ItemDetails = () => {
     }));
   };
 
-  const recoverData = {
-    recoveredLocation,
-    recoveredDate,
-    title,
-    itemId: data._id, // assuming your data has an _id field
-    // recoveredBy: users.uid, // or whatever user identifier you want to store
-  };
-
-  console.log(recoverData);
-
   const handleSubmitRecovery = async (e) => {
     e.preventDefault();
+    if (!data) return;
+
     setIsSubmitting(true);
+
+    const recoverData = {
+      recoveredLocation,
+      recoveredDate,
+      title: data.title,
+      itemId: data._id,
+      userEmail : users?.email
+      // recoveredBy: users.uid,
+    };
 
     try {
       await axios.post("http://localhost:3000/recoversItems", recoverData);
-
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
       setIsRecovered(true);
       setShowModal(false);
     } catch (error) {
       console.error("Recovery submission failed:", error);
+      setError("Failed to submit recovery");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#FFFAF0] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#F4A261] mx-auto mb-4"></div>
+          <p className="text-[#3E2F1C]">Loading item details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="min-h-screen bg-[#FFFAF0] flex items-center justify-center">
+        <div className="text-center p-6 bg-[#F0EAD6] rounded-lg max-w-md mx-auto">
+          <h2 className="text-2xl font-bold text-[#3E2F1C] mb-4">Error</h2>
+          <p className="text-[#E76F51] mb-4">{error || "Item not found"}</p>
+          <Link
+            to="/"
+            className="inline-block bg-[#F4A261] hover:bg-[#e69555] text-white font-medium py-2 px-4 rounded-lg"
+          >
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const {
+    postType,
+    title,
+    category,
+    location,
+    date,
+    thumbnail,
+    description,
+    contactName,
+    contactEmail,
+  } = data;
 
   return (
     <div className="min-h-screen bg-[#FFFAF0] py-8 px-4 sm:px-6 lg:px-8">
@@ -94,6 +136,9 @@ const ItemDetails = () => {
             </div>
           )}
         </div>
+
+        {/* Rest of your component remains the same */}
+        {/* ... */}
 
         {/* Item Details */}
         <div className="p-6 md:p-8">
@@ -201,26 +246,28 @@ const ItemDetails = () => {
                 />
               </div>
 
-              <div className="mb-4 bg-white p-3 rounded-lg">
-                <label className="block text-[#9A8C7A] mb-1 text-sm font-medium">
-                  Recovered By
-                </label>
-                <div className="flex items-center">
-                  {users.photoURL && (
-                    <img
-                      src={users.photoURL}
-                      alt="User"
-                      className="w-10 h-10 rounded-full mr-3"
-                    />
-                  )}
-                  <div>
-                    <p className="text-[#3E2F1C] font-medium">
-                      {users.displayName || "User"}
-                    </p>
-                    <p className="text-[#9A8C7A] text-sm">{users.email}</p>
+              {users && (
+                <div className="mb-4 bg-white p-3 rounded-lg">
+                  <label className="block text-[#9A8C7A] mb-1 text-sm font-medium">
+                    Recovered By
+                  </label>
+                  <div className="flex items-center">
+                    {users.photoURL && (
+                      <img
+                        src={users.photoURL}
+                        alt="User"
+                        className="w-10 h-10 rounded-full mr-3"
+                      />
+                    )}
+                    <div>
+                      <p className="text-[#3E2F1C] font-medium">
+                        {users.displayName || "User"}
+                      </p>
+                      <p className="text-[#9A8C7A] text-sm">{users.email}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <div className="flex justify-end space-x-3 mt-6">
                 <button
