@@ -60,7 +60,7 @@ const ItemDetails = () => {
       recoveredDate,
       title: data.title,
       itemId: data._id,
-      userEmail : users?.email
+      userEmail: users?.email,
       // recoveredBy: users.uid,
     };
 
@@ -122,7 +122,7 @@ const ItemDetails = () => {
       {/* Main Content Card */}
       <div className="max-w-4xl mx-auto bg-[#F0EAD6] rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
         {/* Item Image */}
-        <div className="relative h-64 sm:h-80 md:h-96 overflow-hidden">
+        <div className="relative h-64 sm:h-80 md:h-[600px] object-cover overflow-hidden">
           <img
             src={
               thumbnail || "https://via.placeholder.com/800x400?text=No+Image"
