@@ -60,7 +60,7 @@ const MyItems = () => {
             </thead>
             <tbody className="bg-[#F0EAD6] divide-y divide-[#9A8C7A]/20">
               {items.map((item) => (
-                <ItemsTable key={item._id} item={item} />
+                <ItemsTable key={item._id} item={item} setItems={setItems}  />
               ))}
             </tbody>
           </table>

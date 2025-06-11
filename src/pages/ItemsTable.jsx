@@ -1,13 +1,75 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
+import { AuthContext } from "../context/AuthContext";
+import Loader from "../components/Loader";
 
-const ItemsTable = ({ item }) => {
+const ItemsTable = ({ item  , setItems}) => {
   const { postType, title, category, description, _id } = item;
+ 
+  
+    const [loading, setLoading] = useState(true);
+ 
 
-  const handleDelete = () => {
-    // Implement delete functionality
-    console.log("Delete item with id:", _id);
+  const { users } = useContext(AuthContext);
+  
+
+   
+     useEffect(() => {
+       if (users?.email) {
+         fetch(`http://localhost:3000/my-Items?email=${users.email}`)
+           .then((res) => res.json())
+           .then((data) => {
+             setItem(data);
+             setLoading(false);
+           })
+           .catch(() => setLoading(false));
+       }
+     }, [users?.email]);
+  
+
+  const handleDelete = async (itemId) => {
+    console.log(typeof itemId);
+    
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#FF6F00",
+      cancelButtonColor: "#333333",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (!result.isConfirmed) return;
+
+    const res = await fetch(`http://localhost:3000/allItems/${itemId}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Delete failed",
+        confirmButtonColor: "#FF6F00",
+      });
+    }
+
+    await Swal.fire({
+      title: "Deleted!",
+      text: "Your task has been deleted.",
+      icon: "success",
+      confirmButtonColor: "#FF6F00",
+    });
+
+    setItems((prevItems) => prevItems.filter((item) => item._id !== itemId));
   };
+
+    if(loading) return <Loader/>
+
+
+  
 
   const handleUpdate = (id) => {
     // Implement update functionality
@@ -53,7 +115,7 @@ const ItemsTable = ({ item }) => {
             </svg>
           </Link>
           <button
-            onClick={handleDelete}
+            onClick={()=>handleDelete(_id)}
             className="text-[#E76F51] hover:text-[#E76F51]/70 transition-colors duration-200"
           >
             <svg
