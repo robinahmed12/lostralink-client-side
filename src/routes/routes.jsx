@@ -10,11 +10,13 @@ import ItemDetails from "../pages/ItemDetails";
 import RecoverItem from "../pages/RecoverItem";
 import MyItems from "../pages/MyItems";
 import UpdateItem from "../pages/UpdateItem";
+import NotFoundPage from "../components/NotFoundPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <NotFoundPage/>,
     children: [
       {
         index: true,
@@ -38,7 +40,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/recovered-items",
-        element: <RecoverItem />,
+        element: <PrivateRoutes><RecoverItem /></PrivateRoutes>,
       },
 
       {
@@ -53,7 +55,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/manage-items",
-        element: <MyItems />,
+        element: <PrivateRoutes><MyItems /></PrivateRoutes>,
       },
       {
         path: "/update/:id",

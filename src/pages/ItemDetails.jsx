@@ -61,6 +61,7 @@ const ItemDetails = () => {
       title: data.title,
       itemId: data._id,
       userEmail: users?.email,
+       status: "recovered",
       // recoveredBy: users.uid,
     };
 
