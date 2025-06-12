@@ -14,21 +14,22 @@ import { useEffect } from "react";
 
 const AuthProvider = ({ children }) => {
   const [users, setUser] = useState(null);
-  const [loading , setLoading]= useState(true)
-  
+  const [loading, setLoading] = useState(true);
+  console.log(users?.accessToken);
+  // console.log(users.email);
 
   const createUser = (email, password) => {
-    setLoading(true)
+    setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const signInUser = (email, password) => {
-    setLoading(true)
+    setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   const signOutUser = () => {
-    setLoading(true)
+    setLoading(true);
     return signOut(auth);
   };
 
@@ -41,14 +42,14 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const updateUserProfile =(updateData)=> {
-    return updateProfile(auth.currentUser , updateData)
-  }
+  const updateUserProfile = (updateData) => {
+    return updateProfile(auth.currentUser, updateData);
+  };
 
-  const signInWithGoogle = ()=> {
+  const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth , provider)
-  }
+    return signInWithPopup(auth, provider);
+  };
 
   const userInfo = {
     createUser,
@@ -59,7 +60,7 @@ const AuthProvider = ({ children }) => {
     updateUserProfile,
     signInWithGoogle,
     loading,
-    setLoading
+    setLoading,
   };
   return <AuthContext value={userInfo}>{children}</AuthContext>;
 };

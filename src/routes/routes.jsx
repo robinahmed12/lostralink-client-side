@@ -51,7 +51,7 @@ export const router = createBrowserRouter([
         path: "/details/:id",
         loader: ({ params }) =>
           fetch(`http://localhost:3000/allItems/${params.id}`),
-        element: <ItemDetails></ItemDetails>,
+        element: <PrivateRoutes><ItemDetails></ItemDetails></PrivateRoutes>,
       },
       {
         path: "/manage-items",

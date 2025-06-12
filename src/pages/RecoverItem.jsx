@@ -1,42 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import useRecoversApi from "../Api/useRecoversApi";
 
 const RecoverItem = () => {
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+
   const [layout, setLayout] = useState("card"); // 'card' or 'table'
   const { users } = useContext(AuthContext);
+  const { recoversItemApi } = useRecoversApi();
 
   useEffect(() => {
     if (users?.email) {
-      setLoading(true);
-      fetch(`http://localhost:3000/my-recoversItems?email=${users.email}`)
-        .then((res) => res.json())
+      recoversItemApi(users?.email)
         .then((data) => {
-          setItems(data);
-          setLoading(false);
+          setItems(data || []);
         })
-        .catch(() => {
-          setLoading(false);
+        .catch((error) => {
+          console.error("Error fetching items:", error);
+          setItems([]);
         });
     }
-  }, [users?.email]);
+  }, [recoversItemApi, users?.email]);
 
   const toggleLayout = () => {
     setLayout(layout === "card" ? "table" : "card");
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-[50vh] flex items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="h-12 w-12 bg-[#F4A261] rounded-full mb-4"></div>
-          <p className="text-[#3E2F1C]">Loading your recovered items...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (!items || items.length === 0) {
     return (
@@ -63,7 +52,7 @@ const RecoverItem = () => {
             here.
           </p>
           <Link
-            to="/found-items"
+            to="/allItems"
             className="mt-6 inline-block px-6 py-2 bg-[#F4A261] text-[#3E2F1C] rounded-md hover:bg-[#E76F51] hover:text-white transition-colors duration-200"
           >
             Browse Found Items
@@ -85,22 +74,44 @@ const RecoverItem = () => {
               Items you've successfully recovered through our platform
             </p>
           </div>
-          
+
           <button
             onClick={toggleLayout}
             className="flex items-center gap-2 px-4 py-2 bg-[#F0EAD6] hover:bg-[#F4A261] text-[#3E2F1C] rounded-md transition-all duration-200 shadow-sm hover:shadow-md"
           >
             {layout === "card" ? (
               <>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 10h16M4 14h16M4 18h16"
+                  />
                 </svg>
                 <span>Table View</span>
               </>
             ) : (
               <>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                  />
                 </svg>
                 <span>Card View</span>
               </>
