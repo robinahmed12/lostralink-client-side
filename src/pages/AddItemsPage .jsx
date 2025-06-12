@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const AddItemsPage = () => {
   const { users } = useContext(AuthContext);
@@ -19,8 +20,6 @@ const AddItemsPage = () => {
     // contactName: "",
     // contactEmail: "",
   });
-
-
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -83,13 +82,15 @@ const AddItemsPage = () => {
       userEmail: users?.email || "",
     };
     console.log(itemData);
-    
 
     try {
-      await axios.post("http://localhost:3000/items",  itemData );
-      toast.success("Item posted successfully!", {
+      await axios.post("http://localhost:3000/items", itemData);
+      Swal.fire({
         position: "top-center",
-        className: "bg-[#2A9D8F] text-white",
+        icon: "success",
+        title: "Item posted successfully",
+        showConfirmButton: false,
+        timer: 1500,
       });
 
       setFormData((prev) => ({
@@ -325,7 +326,7 @@ const AddItemsPage = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-[#264653] text-white py-2 px-4 rounded-md hover:bg-[#1f3c3b] transition-all"
+              className="bg-[#264653] text-white py-2 lg:px-80 px-24  rounded-md hover:bg-[#1f3c3b] transition-all"
             >
               {isSubmitting ? "Submitting..." : "Post Item"}
             </button>

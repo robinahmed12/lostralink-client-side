@@ -1,30 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import ItemsTable from './ItemsTable';
+import useMyItemApi from '../Api/useMyItemApi';
+import Loader from '../components/Loader';
+
 
 const MyItems = () => {
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { users } = useContext(AuthContext);
+  const { users , loading } = useContext(AuthContext);
+  const {myItemsApi} = useMyItemApi()
 
-  useEffect(() => {
-    if (users?.email) {
-      fetch(`http://localhost:3000/my-Items?email=${users.email}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setItems(data);
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
-    }
-  }, [users?.email]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#F4A261]"></div>
-      </div>
-    );
+
+ useEffect(() => {
+     if (users?.email) {
+       myItemsApi(users?.email)
+         .then((data) => {
+           setItems(data || []);
+         })
+         .catch((error) => {
+           console.error("Error fetching items:", error);
+           setItems([]);
+         });
+     }
+   }, [myItemsApi, users?.email]);
+
+    if(loading) {
+    return <Loader/>
   }
 
   return (

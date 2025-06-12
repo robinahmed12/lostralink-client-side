@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Banner from "../../section/Banner";
@@ -6,8 +6,9 @@ import CategoriesSection from "../../section/CategoriesSection";
 import HowItWorks from "../../section/HowItWorks";
 import TestimonialsSection from "../../section/TestimonialsSection";
 import PostItemSection from "../../section/PostItemSection";
-import ItemDetails from "../ItemDetails";
 import RecentItems from "../RecentItems";
+import { AuthContext } from "../../context/AuthContext";
+import Loader from "../../components/Loader";
 
 // Animation variants
 const containerVariants = {
@@ -57,7 +58,14 @@ const AnimatedSection = ({ children }) => {
   );
 };
 
+
+
 const Home = () => {
+  const {loading} = useContext(AuthContext)
+
+  if (loading) {
+    return <Loader/>
+  }
   return (
     <motion.div
       initial="hidden"

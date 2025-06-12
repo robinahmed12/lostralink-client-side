@@ -20,7 +20,8 @@ const ItemsTable = ({ item  , setItems}) => {
          fetch(`http://localhost:3000/my-Items?email=${users.email}`)
            .then((res) => res.json())
            .then((data) => {
-             setItem(data);
+             console.log(data);
+             ;
              setLoading(false);
            })
            .catch(() => setLoading(false));

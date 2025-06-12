@@ -11,6 +11,7 @@ import RecoverItem from "../pages/RecoverItem";
 import MyItems from "../pages/MyItems";
 import UpdateItem from "../pages/UpdateItem";
 import NotFoundPage from "../components/NotFoundPage";
+import AboutUs from "../pages/AboutUs";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,11 @@ export const router = createBrowserRouter([
         },
         element: <UpdateItem />,
       },
+
+      {
+        path: "/about",
+        element: <AboutUs/>
+      }
     ],
   },
 ]);

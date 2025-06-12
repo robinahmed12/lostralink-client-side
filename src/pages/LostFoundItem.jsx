@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import AllItemsCard from "./AllItemsCard";
 import { FiSearch, FiX } from "react-icons/fi";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import Loader from "../components/Loader";
 
 const LostFoundItem = () => {
   const [items, setItems] = useState([]);
@@ -8,6 +11,7 @@ const LostFoundItem = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
+  const {loading} = useContext(AuthContext)
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -53,7 +57,10 @@ const LostFoundItem = () => {
     setSearchTerm("");
     setFilteredItems(items);
   };
-
+  
+  if (loading) {
+    return <Loader/>
+  }
   if (error) {
     return (
       <div className="min-h-screen bg-[#FFFAF0] flex justify-center items-center">

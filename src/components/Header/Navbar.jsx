@@ -66,7 +66,7 @@ const Navbar = () => {
 
             {users && (
               <NavLink
-                to="/add-item"
+                to="/about"
                 className={({ isActive }) =>
                   `px-3 py-2 rounded-md text-sm font-medium ${
                     isActive
@@ -75,7 +75,7 @@ const Navbar = () => {
                   } transition-all duration-300`
                 }
               >
-                Add Item
+                About Us
               </NavLink>
             )}
           </div>

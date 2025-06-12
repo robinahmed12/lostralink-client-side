@@ -5,12 +5,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+import Loader from "../components/Loader";
 
 const ItemDetails = () => {
-  const { users } = useContext(AuthContext);
+  const { users , loading  } = useContext(AuthContext);
   const loadedData = useLoaderData();
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
@@ -27,10 +27,9 @@ const ItemDetails = () => {
     if (loadedData) {
       setData(loadedData);
       setIsRecovered(loadedData.status === "recovered");
-      setLoading(false);
+     
     } else {
       setError("Item data not found");
-      setLoading(false);
     }
   }, [loadedData]);
 
@@ -79,14 +78,9 @@ const ItemDetails = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-[#FFFAF0] flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#F4A261] mx-auto mb-4"></div>
-          <p className="text-[#3E2F1C]">Loading item details...</p>
-        </div>
-      </div>
-    );
+    return  <Loader/>
+      
+    
   }
 
   if (error || !data) {

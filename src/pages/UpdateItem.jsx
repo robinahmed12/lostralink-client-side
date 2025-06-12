@@ -3,12 +3,15 @@ import { useParams, useNavigate, useLoaderData } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../context/AuthContext";
+import Loader from "../components/Loader";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const UpdateItem = () => {
   const itemData = useLoaderData();
   const { id } = useParams();
   const navigate = useNavigate();
-  const { users } = useContext(AuthContext);
+  const { users, loading } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     postType: "lost",
@@ -75,18 +78,26 @@ const UpdateItem = () => {
       });
 
       if (response.ok) {
-        navigate(`/items/${id}`, {
-          state: { message: "Item updated successfully!" },
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "Update Item Successfully",
+          showConfirmButton: false,
+          timer: 1500,
         });
       } else {
         throw new Error("Update failed");
       }
     } catch (error) {
-      console.error("Update error:", error);
+      toast.error("Update error:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="min-h-screen bg-[#FFFAF0] py-8 px-4 sm:px-6 lg:px-8">
