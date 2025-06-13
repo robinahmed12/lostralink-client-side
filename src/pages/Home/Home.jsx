@@ -9,6 +9,8 @@ import PostItemSection from "../../section/PostItemSection";
 import RecentItems from "../RecentItems";
 import { AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/Loader";
+import Counter from "../../section/Counter";
+import FAQSection from "../../section/FAQSection";
 
 // Animation variants
 const containerVariants = {
@@ -58,76 +60,77 @@ const AnimatedSection = ({ children }) => {
   );
 };
 
-
-
 const Home = () => {
-  const {loading} = useContext(AuthContext)
+  const { loading } = useContext(AuthContext);
 
   if (loading) {
-    return <Loader/>
+    return <Loader />;
   }
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-      className="bg-[#FFFAF0] min-h-screen"
-    >
-      {/* Banner with animation */}
-      <AnimatedSection>
-        <motion.div variants={itemVariants}>
-          <Banner />
-        </motion.div>
-      </AnimatedSection>
-
-      <AnimatedSection>
-        <motion.div variants={itemVariants}>
-          <RecentItems />
-        </motion.div>
-      </AnimatedSection>
-
-      {/* Categories Section */}
-      <AnimatedSection>
-        <motion.div
-          variants={itemVariants}
-          className="py-12 px-4 sm:px-6 lg:px-8"
-        >
-          <CategoriesSection />
-        </motion.div>
-      </AnimatedSection>
-
-      {/* How It Works Section */}
-      <AnimatedSection>
-        <motion.div
-          variants={itemVariants}
-          className="py-12 px-4 sm:px-6 lg:px-8 "
-        >
-          <HowItWorks />
-        </motion.div>
-      </AnimatedSection>
-
-      {/* Post Item Section */}
-      <AnimatedSection>
-        <motion.div
-          variants={itemVariants}
-          className="py-12 px-4 sm:px-6 lg:px-8"
-        >
-          <motion.div variants={scaleUp} whileHover="hover" whileTap="tap">
-            <PostItemSection />
+    <>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className="bg-[#FFFAF0] min-h-screen"
+      >
+        {/* Banner with animation */}
+        <AnimatedSection>
+          <motion.div variants={itemVariants}>
+            <Banner />
           </motion.div>
-        </motion.div>
-      </AnimatedSection>
+        </AnimatedSection>
 
-      {/* Testimonials Section */}
-      <AnimatedSection>
-        <motion.div
-          variants={itemVariants}
-          className="py-12 px-4 sm:px-6 lg:px-8"
-        >
-          <TestimonialsSection />
-        </motion.div>
-      </AnimatedSection>
-    </motion.div>
+        <AnimatedSection>
+          <motion.div variants={itemVariants}>
+            <RecentItems />
+          </motion.div>
+        </AnimatedSection>
+
+        <AnimatedSection>
+          <motion.div variants={itemVariants}>
+            <Counter />
+          </motion.div>
+        </AnimatedSection>
+
+        {/* Categories Section */}
+        <AnimatedSection>
+          <motion.div variants={itemVariants}>
+            <CategoriesSection />
+          </motion.div>
+        </AnimatedSection>
+
+        {/* How It Works Section */}
+        <AnimatedSection>
+          <motion.div variants={itemVariants}>
+            <HowItWorks />
+          </motion.div>
+        </AnimatedSection>
+
+        {/* Post Item Section */}
+        <AnimatedSection>
+          <motion.div variants={itemVariants}>
+            <motion.div variants={scaleUp} whileHover="hover" whileTap="tap">
+              <PostItemSection />
+            </motion.div>
+          </motion.div>
+        </AnimatedSection>
+
+        {/* Testimonials Section */}
+        <AnimatedSection>
+          <motion.div variants={itemVariants}>
+            <TestimonialsSection />
+          </motion.div>
+        </AnimatedSection>
+
+
+         <AnimatedSection>
+          <motion.div variants={itemVariants}>
+            <FAQSection />
+          </motion.div>
+        </AnimatedSection>
+      </motion.div>
+    </>
   );
 };
 

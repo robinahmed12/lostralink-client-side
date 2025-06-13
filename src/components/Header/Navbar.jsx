@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import LostraLinkLogo from "../LostraLinkLogo";
 
 const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -30,9 +31,12 @@ const Navbar = () => {
               to="/"
               className="text-[#3E2F1C] font-bold text-xl hover:text-[#2A9D8F] transition-colors duration-300 flex items-center"
             >
-              <span className="mr-1">🔗</span>
-              <span className="hidden sm:inline">LostraLink</span>
-              <span className="sm:hidden">LL</span>
+              <header className="flex items-center p-4">
+                <LostraLinkLogo size={60} />
+                <h1 className="ml-3 text-2xl font-bold text-[#3E2F1C]">
+                  LostraLink
+                </h1>
+              </header>
             </NavLink>
           </div>
 
@@ -61,7 +65,7 @@ const Navbar = () => {
                 } transition-all duration-300`
               }
             >
-              Lost & Found
+              Lost & Found Items
             </NavLink>
 
             {users && (
@@ -105,14 +109,19 @@ const Navbar = () => {
                     aria-label="User menu"
                     aria-expanded={isProfileOpen}
                   >
-                    <div className="relative">
+                    <div className="relative group">
                       <img
-                        className="h-8 w-8 rounded-full object-cover border-2 border-[#3E2F1C] hover:border-[#2A9D8F] transition-all duration-300"
+                        className="h-11 w-11 rounded-full object-cover border-2 border-[#3E2F1C] hover:border-[#2A9D8F] transition-all duration-300"
                         src={
                           users?.photoURL || "https://via.placeholder.com/32"
                         }
                         alt="Profile"
                       />
+                      {/* Display name tooltip on hover */}
+                      <div className="absolute  top-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-[#3E2F1C] text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                        {users?.displayName || "User"}
+                      </div>
+
                       {/* Dropdown indicator */}
                       <svg
                         className={`w-4 h-4 absolute -bottom-1 -right-1 text-[#3E2F1C] transition-transform duration-300 ${
@@ -133,12 +142,8 @@ const Navbar = () => {
                   {/* Profile Dropdown */}
                   {isProfileOpen && (
                     <div className="absolute right-0 mt-2 w-56 bg-[#F0EAD6] rounded-md shadow-lg py-1 z-50 border border-[#9A8C7A] animate-fadeIn">
-                      <div className="px-4 py-2 border-b border-[#9A8C7A]">
-                        <p className="text-sm font-medium text-[#3E2F1C]">
-                          {users?.displayName || "User"}
-                        </p>
-                        <p className="text-xs text-[#9A8C7A]">{users?.email}</p>
-                      </div>
+                      {/* Display name tooltip on hover */}
+
                       <NavLink
                         to="/add-item"
                         className="block px-4 py-2 text-sm text-[#3E2F1C] hover:bg-[#2A9D8F] hover:text-white transition-colors duration-300"
@@ -160,6 +165,7 @@ const Navbar = () => {
                       >
                         Manage My Items
                       </NavLink>
+
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-[#E76F51] hover:bg-[#E76F51] hover:text-white transition-colors duration-300 md:hidden"
                         onClick={handleLogOut}
@@ -174,7 +180,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex mr-4 items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-[#3E2F1C] hover:text-[#2A9D8F] focus:outline-none"
@@ -230,26 +236,13 @@ const Navbar = () => {
             {users ? (
               <>
                 <NavLink
-                  to="/add-item"
+                  to="/about"
                   className="block px-3 py-2 rounded-md text-base font-medium text-[#3E2F1C] hover:bg-[#2A9D8F] hover:text-white transition-colors duration-300"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Add Item
+                  About us
                 </NavLink>
-                <NavLink
-                  to="/recovered-items"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-[#3E2F1C] hover:bg-[#2A9D8F] hover:text-white transition-colors duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  My Recovered Items
-                </NavLink>
-                <NavLink
-                  to="/manage-items"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-[#3E2F1C] hover:bg-[#2A9D8F] hover:text-white transition-colors duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Manage My Items
-                </NavLink>
+
                 <button
                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-[#E76F51] hover:bg-[#E76F51] hover:text-white transition-colors duration-300"
                   onClick={handleLogOut}

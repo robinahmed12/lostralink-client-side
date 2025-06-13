@@ -63,11 +63,11 @@ const AboutUs = () => {
 
   return (
     <section 
-      className="py-12 px-4 md:px-8 lg:px-16 bg-[#FFFAF0]"
+      className="py-12 px-4 max-w-6xl mx-auto md:px-8 lg:px-16 bg-[#FFFAF0]"
       id="about"
       ref={ref}
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="">
         <motion.h2 
           className="text-3xl md:text-4xl font-bold mb-12 text-[#3E2F1C] text-center"
           initial={{ opacity: 0, y: 20 }}

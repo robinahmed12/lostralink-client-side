@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    errorElement: <NotFoundPage/>,
+    errorElement: <NotFoundPage />,
     children: [
       {
         index: true,
@@ -41,7 +41,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/recovered-items",
-        element: <PrivateRoutes><RecoverItem /></PrivateRoutes>,
+        element: (
+          <PrivateRoutes>
+            <RecoverItem />
+          </PrivateRoutes>
+        ),
       },
 
       {
@@ -52,11 +56,19 @@ export const router = createBrowserRouter([
         path: "/details/:id",
         loader: ({ params }) =>
           fetch(`http://localhost:3000/allItems/${params.id}`),
-        element: <PrivateRoutes><ItemDetails></ItemDetails></PrivateRoutes>,
+        element: (
+          <PrivateRoutes>
+            <ItemDetails></ItemDetails>
+          </PrivateRoutes>
+        ),
       },
       {
         path: "/manage-items",
-        element: <PrivateRoutes><MyItems /></PrivateRoutes>,
+        element: (
+          <PrivateRoutes>
+            <MyItems />
+          </PrivateRoutes>
+        ),
       },
       {
         path: "/update/:id",
@@ -74,8 +86,8 @@ export const router = createBrowserRouter([
 
       {
         path: "/about",
-        element: <AboutUs/>
-      }
+        element: <AboutUs />,
+      },
     ],
   },
 ]);

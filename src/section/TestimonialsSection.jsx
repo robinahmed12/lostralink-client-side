@@ -56,8 +56,8 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#FFFAF0]">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 bg-[#FFFAF0]">
+      <div className="">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-[#3E2F1C] mb-4">
             Success Stories

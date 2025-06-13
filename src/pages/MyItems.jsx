@@ -3,6 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import ItemsTable from './ItemsTable';
 import useMyItemApi from '../Api/useMyItemApi';
 import Loader from '../components/Loader';
+import { Link } from 'react-router';
 
 
 const MyItems = () => {
@@ -30,13 +31,16 @@ const MyItems = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-[#3E2F1C] mb-8">My Posted Items</h1>
       
       {items.length === 0 ? (
         <div className="bg-[#F0EAD6] rounded-lg p-8 text-center">
           <p className="text-xl text-[#3E2F1C]">You haven't posted any items yet.</p>
           <p className="text-[#9A8C7A] mt-2">When you post lost or found items, they will appear here.</p>
+         <button  className='mt-3 bg-teal-500 hover:bg-[#E76F51] text-gray-900 font-semibold rounded-2xl px-6 py-2'>
+           <Link to={"/add-item"}>Post Your Items</Link>
+         </button>
         </div>
       ) : (
         <div className="overflow-x-auto bg-[#F0EAD6] rounded-lg shadow-lg">

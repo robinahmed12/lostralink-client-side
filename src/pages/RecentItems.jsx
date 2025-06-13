@@ -85,7 +85,7 @@ const RecentItems = () => {
   }
 
   return (
-    <section className="pt-28 bg-[#FFFAF0]">
+    <section className="pt-28 max-w-6xl mx-auto bg-[#FFFAF0]">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-[#3E2F1C] mb-2 text-center">
           Latest Find & Lost Items

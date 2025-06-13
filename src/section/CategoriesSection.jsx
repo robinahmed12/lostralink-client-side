@@ -23,7 +23,7 @@ const CategoriesSection = () => {
   };
 
   return (
-    <section className="py-12 bg-[#FFFAF0]">
+    <section className="py-12 max-w-6xl mx-auto bg-[#FFFAF0]">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-[#3E2F1C] mb-8 text-center">Popular Categories</h2>
         

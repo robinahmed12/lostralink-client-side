@@ -11,6 +11,7 @@ import {
   FaBell,
   FaUser,
 } from "react-icons/fa";
+import LostraLinkLogo from "../LostraLinkLogo";
 
 const Footer = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -75,7 +76,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Logo and Description */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-[#F4A261]">Lost & Found</h2>
+            <div className="flex items-center p-4">
+                <LostraLinkLogo size={60} />
+                <h1 className="ml-3 text-2xl font-bold">
+                  LostraLink
+                </h1>
+              </div>
             <p className="text-[#9A8C7A]">
               Connecting lost items with their owners through community power.
             </p>
