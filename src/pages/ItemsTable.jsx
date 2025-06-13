@@ -17,7 +17,7 @@ const ItemsTable = ({ item  , setItems}) => {
    
      useEffect(() => {
        if (users?.email) {
-         fetch(`http://localhost:3000/my-Items?email=${users.email}`)
+         fetch(`https://lostra-link-server.vercel.app/my-Items?email=${users.email}`)
            .then((res) => res.json())
            .then((data) => {
              console.log(data);
@@ -44,7 +44,7 @@ const ItemsTable = ({ item  , setItems}) => {
 
     if (!result.isConfirmed) return;
 
-    const res = await fetch(`http://localhost:3000/allItems/${itemId}`, {
+    const res = await fetch(`https://lostra-link-server.vercel.app/allItems/${itemId}`, {
       method: "DELETE",
     });
 

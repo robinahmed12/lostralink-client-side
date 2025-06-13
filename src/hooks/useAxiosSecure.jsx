@@ -6,7 +6,7 @@ const useAxiosSecure = () => {
   const { users } = useContext(AuthContext);
 
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://lostra-link-server.vercel.app",
   });
 
   axiosInstance.interceptors.request.use((config) => {

@@ -16,7 +16,7 @@ const LostFoundItem = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch("http://localhost:3000/allItems");
+        const response = await fetch("https://lostra-link-server.vercel.app/allItems");
         if (!response.ok) {
           throw new Error("Failed to fetch items");
         }

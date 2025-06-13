@@ -84,7 +84,7 @@ const AddItemsPage = () => {
     console.log(itemData);
 
     try {
-      await axios.post("http://localhost:3000/items", itemData);
+      await axios.post("https://lostra-link-server.vercel.app/items", itemData);
       Swal.fire({
         position: "top-center",
         icon: "success",

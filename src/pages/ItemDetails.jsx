@@ -65,7 +65,7 @@ const ItemDetails = () => {
     };
 
     try {
-      await axios.post("http://localhost:3000/recoversItems", recoverData);
+      await axios.post("https://lostra-link-server.vercel.app/recoversItems", recoverData);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsRecovered(true);
       setShowModal(false);
