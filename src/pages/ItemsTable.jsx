@@ -4,34 +4,30 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
 
-const ItemsTable = ({ item  , setItems}) => {
+const ItemsTable = ({ item, setItems }) => {
   const { postType, title, category, description, _id } = item;
- 
-  
-    const [loading, setLoading] = useState(true);
- 
+
+  const [loading, setLoading] = useState(true);
 
   const { users } = useContext(AuthContext);
-  
 
-   
-     useEffect(() => {
-       if (users?.email) {
-         fetch(`https://lostra-link-server.vercel.app/my-Items?email=${users.email}`)
-           .then((res) => res.json())
-           .then((data) => {
-             console.log(data);
-             ;
-             setLoading(false);
-           })
-           .catch(() => setLoading(false));
-       }
-     }, [users?.email]);
-  
+  useEffect(() => {
+    if (users?.email) {
+      fetch(
+        `https://lostra-link-server.vercel.app/my-Items?email=${users.email}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
+  }, [users?.email]);
 
   const handleDelete = async (itemId) => {
     console.log(typeof itemId);
-    
+
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -44,9 +40,12 @@ const ItemsTable = ({ item  , setItems}) => {
 
     if (!result.isConfirmed) return;
 
-    const res = await fetch(`https://lostra-link-server.vercel.app/allItems/${itemId}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `https://lostra-link-server.vercel.app/allItems/${itemId}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (!res.ok) {
       return Swal.fire({
@@ -67,10 +66,7 @@ const ItemsTable = ({ item  , setItems}) => {
     setItems((prevItems) => prevItems.filter((item) => item._id !== itemId));
   };
 
-    if(loading) return <Loader/>
-
-
-  
+  if (loading) return <Loader />;
 
   const handleUpdate = (id) => {
     // Implement update functionality
@@ -102,8 +98,9 @@ const ItemsTable = ({ item  , setItems}) => {
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         <div className="flex space-x-2">
-          <Link to={`/update/${_id}`}
-          onClick={handleUpdate}
+          <Link
+            to={`/update/${_id}`}
+            onClick={handleUpdate}
             className="text-[#3E2F1C] hover:text-[#F4A261] transition-colors duration-200"
           >
             <svg
@@ -116,7 +113,7 @@ const ItemsTable = ({ item  , setItems}) => {
             </svg>
           </Link>
           <button
-            onClick={()=>handleDelete(_id)}
+            onClick={() => handleDelete(_id)}
             className="text-[#E76F51] hover:text-[#E76F51]/70 transition-colors duration-200"
           >
             <svg

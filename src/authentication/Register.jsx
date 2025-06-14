@@ -1,25 +1,26 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,   useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
-import { toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 import Lottie from "lottie-react";
 import loadingAnimation from "../assets/Animation - 1749544429039.json";
-import successAnimation from "../assets/Animation - 1749544944960.json";
 
 const Register = () => {
+  const { location } = useLocation();
+  const navigate = useNavigate();
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    photoURL: ""
+    photoURL: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const validatePassword = (password) => {
@@ -44,29 +45,30 @@ const Register = () => {
     setIsLoading(true);
 
     createUser(email, password)
-      .then(({ user }) => {
-        return updateUserProfile({
-          displayName: name,
-          ...(photoURL && { photoURL })
-        }).then(() => {
-          toast.success(
-            <div className="flex items-center">
-              <Lottie 
-                animationData={successAnimation} 
-                loop={false} 
-                style={{ width: 40, height: 40 }} 
-              />
-              <span className="ml-2">Registration successful!</span>
-            </div>
-          );
-        });
+      .then((result) => {
+        if (result.user) {
+          toast.success("🦄 Registration successful", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
+        navigate(`${location?.state ?? "/"}`);
       })
       .catch((error) => {
-        toast.error(error.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
+        toast(error.message);
       });
+
+    updateUserProfile({
+      displayName: name,
+      ...(photoURL && { photoURL }),
+    });
   };
 
   return (
@@ -145,10 +147,10 @@ const Register = () => {
               className="w-full py-2 px-4 rounded-md font-medium bg-[#F4A261] text-[#3E2F1C] hover:shadow-md flex justify-center items-center"
             >
               {isLoading ? (
-                <Lottie 
-                  animationData={loadingAnimation} 
-                  loop={true} 
-                  style={{ width: 28, height: 28 }} 
+                <Lottie
+                  animationData={loadingAnimation}
+                  loop={true}
+                  style={{ width: 32, height: 32 }}
                 />
               ) : (
                 "Register"

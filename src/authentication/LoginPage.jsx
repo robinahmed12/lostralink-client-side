@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGoogle, FaGithub, FaEnvelope, FaLock } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
-import { toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 
 const LoginPage = () => {
+  const { location } = useLocation();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -16,10 +18,18 @@ const LoginPage = () => {
 
     signInUser(email, password)
       .then(() => {
-        toast.success("Login successful!", {
+        toast.success("🦄 Login successful", {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
         });
+        navigate(`${location?.state ?? "/"}`);
       })
       .catch((error) => {
         toast.error(error.message, {
@@ -39,10 +49,19 @@ const LoginPage = () => {
       .then(
         (result) => {
           console.log("Google login success:", result);
-          toast.success("Google login successful!", {
-            position: "top-center",
-            autoClose: 3000,
-          });
+           toast.success("🦄 Google Login successful", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+
+           navigate(`${location?.state ?? "/"}`);
         },
         (error) => {
           console.error("Google login failed:", error);
