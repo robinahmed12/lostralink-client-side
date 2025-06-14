@@ -81,7 +81,6 @@ const AddItemsPage = () => {
       ...formData,
       userEmail: users?.email || "",
     };
-    console.log(itemData);
 
     try {
       await axios.post("https://lostra-link-server.vercel.app/items", itemData);

@@ -1,20 +1,37 @@
-import axios from "axios";
-import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import axios from 'axios';
+import React from 'react';
+import useAuth from './useAuth';
+
+const axiosInstance = axios.create({
+    baseURL: 'https://lostra-link-server.vercel.app'
+})
 
 const useAxiosSecure = () => {
-  const { users } = useContext(AuthContext);
+    const { users } = useAuth();
 
-  const axiosInstance = axios.create({
-    baseURL: "https://lostra-link-server.vercel.app",
-  });
+    axiosInstance.interceptors.request.use(config => {
+        config.headers.authorization = `Bearer ${users?.accessToken}`
+        return config;
+    });
 
-  axiosInstance.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${users?.accessToken}`;
+    // response interceptor
+    axiosInstance.interceptors.response.use(response => {
+        return response;
+    }, error => {
+        console.log(error)
+        // if (error.status === 401 || error.status === 403) {
+        //     signOutUser()
+        //         .then(() => {
+        //             console.log('sign out user for 401 status code')
+        //         })
+        //         .catch(err => {
+        //             console.log(err)
+        //         })
+        // }
+        return Promise.reject(error)
+    })
 
-    return config
-  });
-  return axiosInstance;
+    return axiosInstance;
 };
 
 export default useAxiosSecure;

@@ -48,20 +48,22 @@ const LoginPage = () => {
     signInWithGoogle()
       .then(
         (result) => {
-          console.log("Google login success:", result);
-           toast.success("🦄 Google Login successful", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        });
+          if (result.user) {
+            toast.success("🦄 Google Login successful", {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            });
+          }
+    
 
-           navigate(`${location?.state ?? "/"}`);
+          navigate(`${location?.state ?? "/"}`);
         },
         (error) => {
           console.error("Google login failed:", error);

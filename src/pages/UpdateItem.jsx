@@ -90,9 +90,18 @@ const UpdateItem = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axiosSecure.put(`/items/${id}`, formData);
+      const response = await fetch(
+        `https://lostra-link-server.vercel.app/update/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-      if (response.data.success) {
+      if (response.ok) {
         Swal.fire({
           position: "top-center",
           icon: "success",
@@ -100,13 +109,15 @@ const UpdateItem = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/dashboard/my-posts");
+        navigate(-1); // Navigate back after successful update
       } else {
-        throw new Error("Update failed");
+        throw new Error("Update failed - no changes made");
       }
     } catch (error) {
-      toast.error("Update error: " + error.message);
-      console.error("Update error:", error);
+      toast.error(
+        "Update error: " + (error.response?.data?.message || error.message)
+      );
+      // console.error("Update error:", error);
     } finally {
       setIsSubmitting(false);
     }

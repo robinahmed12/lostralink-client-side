@@ -54,9 +54,6 @@ export const router = createBrowserRouter([
       },
       {
         path: "/details/:id",
-        // loader: itemDetailsLoader,
-        // loader: ({ params }) =>
-        //   fetch(`https://lostra-link-server.vercel.app/allItems/${params.id}`),
         element: (
           <PrivateRoutes>
             <ItemDetails></ItemDetails>

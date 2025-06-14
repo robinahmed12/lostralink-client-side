@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
@@ -7,27 +7,7 @@ import Loader from "../components/Loader";
 const ItemsTable = ({ item, setItems }) => {
   const { postType, title, category, description, _id } = item;
 
-  const [loading, setLoading] = useState(true);
-
-  const { users } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (users?.email) {
-      fetch(
-        `https://lostra-link-server.vercel.app/my-Items?email=${users.email}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
-    }
-  }, [users?.email]);
-
   const handleDelete = async (itemId) => {
-    console.log(typeof itemId);
-
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -66,12 +46,7 @@ const ItemsTable = ({ item, setItems }) => {
     setItems((prevItems) => prevItems.filter((item) => item._id !== itemId));
   };
 
-  if (loading) return <Loader />;
-
-  const handleUpdate = (id) => {
-    // Implement update functionality
-    console.log("Update item with id:", id);
-  };
+  // if (loading) return <Loader />;
 
   return (
     <tr className="hover:bg-[#F4A261]/10 transition-all duration-200">
@@ -100,7 +75,6 @@ const ItemsTable = ({ item, setItems }) => {
         <div className="flex space-x-2">
           <Link
             to={`/update/${_id}`}
-            onClick={handleUpdate}
             className="text-[#3E2F1C] hover:text-[#F4A261] transition-colors duration-200"
           >
             <svg

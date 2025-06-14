@@ -15,8 +15,6 @@ import { useEffect } from "react";
 const AuthProvider = ({ children }) => {
   const [users, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(users?.accessToken);
-  // console.log(users.email);
 
   const createUser = (email, password) => {
     setLoading(true);
