@@ -31,7 +31,7 @@ const MyItems = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-[#3E2F1C] mb-8">My Posted Items</h1>
       
       {items.length === 0 ? (

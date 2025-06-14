@@ -63,7 +63,7 @@ const AboutUs = () => {
 
   return (
     <section 
-      className="py-12 px-4 max-w-6xl mx-auto md:px-8 lg:px-16 bg-[#FFFAF0]"
+      className="py-12 px-4 max-w-7xl mx-auto md:px-8 lg:px-16 bg-[#FFFAF0]"
       id="about"
       ref={ref}
     >

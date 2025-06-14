@@ -64,7 +64,7 @@ const RecoverItem = () => {
 
   return (
     <div className="py-6 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div>
             <h2 className="text-2xl font-bold text-[#3E2F1C]">

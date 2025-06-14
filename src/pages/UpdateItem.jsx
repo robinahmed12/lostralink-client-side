@@ -1,18 +1,20 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams, useNavigate, useLoaderData } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const UpdateItem = () => {
-  const itemData = useLoaderData();
   const { id } = useParams();
   const navigate = useNavigate();
   const { users, loading } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
 
+  const [itemData, setItemData] = useState(null);
   const [formData, setFormData] = useState({
     postType: "lost",
     thumbnail: "",
@@ -26,6 +28,36 @@ const UpdateItem = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const categories = [
+    "Pets",
+    "Documents",
+    "Electronics",
+    "Jewelry",
+    "Clothing",
+    "Bags",
+    "Keys",
+    "Other",
+  ];
+
+  // Fetch item data
+  useEffect(() => {
+    const fetchItemData = async () => {
+      try {
+        const response = await axiosSecure.get(
+          `/allItems/${id}?email=${users?.email}`
+        );
+        setItemData(response.data);
+      } catch (error) {
+        toast.error("Failed to fetch item data");
+        console.error("Fetch error:", error);
+      }
+    };
+
+    if (users?.email) {
+      fetchItemData();
+    }
+  }, [id, users?.email, axiosSecure]);
 
   // Initialize form with loaded data
   useEffect(() => {
@@ -44,17 +76,6 @@ const UpdateItem = () => {
     }
   }, [itemData, users]);
 
-  const categories = [
-    "Pets",
-    "Documents",
-    "Electronics",
-    "Jewelry",
-    "Clothing",
-    "Bags",
-    "Keys",
-    "Other",
-  ];
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -69,33 +90,29 @@ const UpdateItem = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`https://lostra-link-server.vercel.app/update/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await axiosSecure.put(`/items/${id}`, formData);
 
-      if (response.ok) {
+      if (response.data.success) {
         Swal.fire({
           position: "top-center",
           icon: "success",
-          title: "Update Item Successfully",
+          title: "Item Updated Successfully",
           showConfirmButton: false,
           timer: 1500,
         });
+        navigate("/dashboard/my-posts");
       } else {
         throw new Error("Update failed");
       }
     } catch (error) {
-      toast.error("Update error:", error);
+      toast.error("Update error: " + error.message);
+      console.error("Update error:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (loading) {
+  if (loading || !itemData) {
     return <Loader />;
   }
 

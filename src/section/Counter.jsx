@@ -41,7 +41,7 @@ const Counter = () => {
   return (
     <section
       ref={ref}
-      className="py-12 max-w-6xl mx-auto md:py-20 mt-20 bg-[#F0EAD6]"
+      className="py-12 max-w-7xl mx-auto md:py-20 mt-20 bg-[#F0EAD6]"
       style={{ fontFamily: "'Your Warm Font', sans-serif" }}
     >
       <div className="container mx-auto  px-4">

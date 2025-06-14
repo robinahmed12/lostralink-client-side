@@ -10,7 +10,7 @@ const PostItemSection = () => {
   };
 
   return (
-    <section className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 bg-[#FFFAF0]">
+    <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-[#FFFAF0]">
       <div className="">
         <div className="bg-[#F0EAD6] rounded-xl shadow-md overflow-hidden p-6 md:p-8">
           <h2 className="text-2xl md:text-3xl font-bold text-[#3E2F1C] mb-4">

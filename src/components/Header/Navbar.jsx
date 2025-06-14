@@ -23,7 +23,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-[#F4A261] py-2 shadow-md sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
@@ -68,20 +68,18 @@ const Navbar = () => {
               Lost & Found Items
             </NavLink>
 
-            {users && (
-              <NavLink
-                to="/about"
-                className={({ isActive }) =>
-                  `px-3 py-2 rounded-md text-sm font-medium ${
-                    isActive
-                      ? "bg-[#2A9D8F] text-white"
-                      : "text-[#3E2F1C] hover:bg-[#F0EAD6] hover:text-[#3E2F1C]"
-                  } transition-all duration-300`
-                }
-              >
-                About Us
-              </NavLink>
-            )}
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `px-3 py-2 rounded-md text-sm font-medium ${
+                  isActive
+                    ? "bg-[#2A9D8F] text-white"
+                    : "text-[#3E2F1C] hover:bg-[#F0EAD6] hover:text-[#3E2F1C]"
+                } transition-all duration-300`
+              }
+            >
+              About Us
+            </NavLink>
           </div>
 
           {/* Auth Section */}

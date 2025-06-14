@@ -54,8 +54,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "/details/:id",
-        loader: ({ params }) =>
-          fetch(`https://lostra-link-server.vercel.app/allItems/${params.id}`),
+        // loader: itemDetailsLoader,
+        // loader: ({ params }) =>
+        //   fetch(`https://lostra-link-server.vercel.app/allItems/${params.id}`),
         element: (
           <PrivateRoutes>
             <ItemDetails></ItemDetails>
@@ -72,16 +73,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/update/:id",
-        loader: async ({ params }) => {
-          const response = await fetch(
-            `https://lostra-link-server.vercel.app/allItems/${params.id}`
-          );
-          if (!response.ok) {
-            throw new Error("Item not found");
-          }
-          return response.json();
-        },
-        element: <UpdateItem />,
+        element: (
+          <PrivateRoutes>
+            <UpdateItem />
+          </PrivateRoutes>
+        ),
       },
 
       {
