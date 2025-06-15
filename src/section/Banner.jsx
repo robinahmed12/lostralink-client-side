@@ -114,7 +114,7 @@ const Banner = () => {
 
       {/* Content */}
       <div className="relative h-full w-full flex flex-col items-center justify-center text-center px-6 z-10">
-        <div className="p-6 sm:p-8 md:p-10 rounded-xl bg-black/30 backdrop-blur-md shadow-xl max-w-3xl mx-auto">
+        <div className="p-6 sm:p-8 md:p-10 rounded-xl bg-black/10 backdrop-blur-md shadow-xl max-w-3xl mx-auto">
           <h1
             className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight ${slides[currentSlide].textColor} mb-4 drop-shadow-md`}
           >
