@@ -11,12 +11,14 @@ const LostFoundItem = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
-  const {loading} = useContext(AuthContext)
+  const { loading } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch("https://lostra-link-server.vercel.app/allItems");
+        const response = await fetch(
+          "https://lostra-link-server.vercel.app/allItems"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch items");
         }
@@ -27,6 +29,8 @@ const LostFoundItem = () => {
         setError(err.message);
       }
     };
+
+    document.title = "Lost and Found Items";
 
     fetchItems();
   }, []);
@@ -57,9 +61,9 @@ const LostFoundItem = () => {
     setSearchTerm("");
     setFilteredItems(items);
   };
-  
+
   if (loading) {
-    return <Loader/>
+    return <Loader />;
   }
   if (error) {
     return (
@@ -70,7 +74,6 @@ const LostFoundItem = () => {
   }
 
   return (
-   
     <div className="min-h-screen  bg-[#FFFAF0] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-[#3E2F1C] mb-6 text-center">

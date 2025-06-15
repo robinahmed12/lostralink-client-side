@@ -61,7 +61,6 @@ const LoginPage = () => {
               transition: Bounce,
             });
           }
-    
 
           navigate(`${location?.state ?? "/"}`);
         },

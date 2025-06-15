@@ -57,6 +57,7 @@ const UpdateItem = () => {
     if (users?.email) {
       fetchItemData();
     }
+    document.title = "Update-Items";
   }, [id, users?.email, axiosSecure]);
 
   // Initialize form with loaded data

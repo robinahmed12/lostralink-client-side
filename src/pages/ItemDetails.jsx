@@ -1,28 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import Loader from "../components/Loader";
+import useRecoversApi from "../Api/useRecoversApi";
 
 const ItemDetails = () => {
-  // const { users } = useContext(AuthContext);
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
+  const { recoversItemApi } = useRecoversApi();
 
   const [item, setItem] = useState(null);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [unauthorized, setUnauthorized] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
   const [recoveryData, setRecoveryData] = useState({
     recoveredLocation: "",
     recoveredDate: new Date(),
   });
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRecovered, setIsRecovered] = useState(false);
 
@@ -33,24 +30,27 @@ const ItemDetails = () => {
     const fetchItem = async () => {
       try {
         const res = await axiosSecure.get(
-          `/allItems/${id}?email= ${users?.email}`
+          `/allItems/${id}?email=${users?.email}`
         );
         setItem(res.data);
-        setIsRecovered(res.data.status === "recovered");
+
+        // Check if this item exists in recovered items
+        const recoveredItems = await recoversItemApi(users?.email);
+        const isItemRecovered = recoveredItems.some(
+          (recoveredItem) => recoveredItem.itemId === res.data._id
+        );
+
+        setIsRecovered(isItemRecovered || res.data.status === "recovered");
       } catch (err) {
-        if (err.response?.status === 401 || err.response?.status === 403) {
-          setUnauthorized(true);
-        } else {
-          console.error(err);
-          setError("Failed to fetch item data.");
-        }
+        console.error("Error fetching item:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchItem();
-  }, [id, axiosSecure, users?.email, loading]);
+    document.title = "Items-Details";
+  }, [id, axiosSecure, users?.email, recoversItemApi]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,7 +69,7 @@ const ItemDetails = () => {
 
   const handleSubmitRecovery = async (e) => {
     e.preventDefault();
-    if (!item) return;
+    if (!item || isRecovered) return;
 
     setIsSubmitting(true);
 
@@ -83,38 +83,40 @@ const ItemDetails = () => {
     };
 
     try {
+      // 1. Save recovery record
       await axios.post(
         "https://lostra-link-server.vercel.app/recoversItems",
         recoverData
       );
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // 2. Update the item status in the allItems collection
+      await axiosSecure.patch(`/allItems/${item._id}`, {
+        status: "recovered",
+      });
+
+      // Update local state
       setIsRecovered(true);
+      setItem((prev) => ({ ...prev, status: "recovered" }));
       setShowModal(false);
     } catch (error) {
       console.error("Recovery submission failed:", error);
-      setError("Failed to submit recovery");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (unauthorized || error || !item) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-[#FFFAF0] flex items-center justify-center">
-        <div className="text-center p-6 bg-[#F0EAD6] rounded-lg max-w-md mx-auto">
-          <h2 className="text-2xl font-bold text-[#3E2F1C] mb-4">Error</h2>
-          <p className="text-[#E76F51] mb-4">
-            {unauthorized
-              ? "You are not authorized to view this item."
-              : error || "Item not found."}
-          </p>
-          <Link
-            to="/"
-            className="inline-block bg-[#F4A261] hover:bg-[#e69555] text-white font-medium py-2 px-4 rounded-lg"
-          >
-            Back to Home
-          </Link>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-[#FFFAF0]">
+        <Loader />
+      </div>
+    );
+  }
+
+  if (!item) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-center text-red-600 font-semibold">
+        Item not found.
       </div>
     );
   }
@@ -130,8 +132,6 @@ const ItemDetails = () => {
     contactName,
     contactEmail,
   } = item;
-
-
 
   return (
     <div className="min-h-screen bg-[#FFFAF0] py-8 px-4 sm:px-6 lg:px-8">
@@ -246,14 +246,18 @@ const ItemDetails = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isRecovered}
                   className={`px-4 py-2 rounded-lg text-white ${
-                    isSubmitting
+                    isSubmitting || isRecovered
                       ? "bg-[#9A8C7A]"
                       : "bg-[#F4A261] hover:bg-[#e6914f]"
                   }`}
                 >
-                  {isSubmitting ? "Submitting..." : "Submit Recovery"}
+                  {isSubmitting
+                    ? "Submitting..."
+                    : isRecovered
+                    ? "Already Recovered"
+                    : "Submit Recovery"}
                 </button>
               </div>
             </form>

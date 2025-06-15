@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
 import { Bounce, toast } from "react-toastify";
-import Lottie from "lottie-react";
 
 const Register = () => {
   const { location } = useLocation();
@@ -156,7 +155,6 @@ const Register = () => {
                 to="/login"
                 className="font-medium hover:underline text-[#2A9D8F]"
               >
-                
                 Log in here
               </Link>
             </p>

@@ -10,7 +10,9 @@ const RecentItems = () => {
   useEffect(() => {
     const fetchRecentItems = async () => {
       try {
-        const response = await fetch("https://lostra-link-server.vercel.app/recentItems");
+        const response = await fetch(
+          "https://lostra-link-server.vercel.app/recentItems"
+        );
 
         // First check if response is OK
         if (!response.ok) {

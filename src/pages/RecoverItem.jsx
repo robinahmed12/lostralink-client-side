@@ -6,10 +6,9 @@ import useRecoversApi from "../Api/useRecoversApi";
 const RecoverItem = () => {
   const [items, setItems] = useState([]);
 
-  const [layout, setLayout] = useState("card"); // 'card' or 'table'
+  const [layout, setLayout] = useState("card"); 
   const { users } = useContext(AuthContext);
   const { recoversItemApi } = useRecoversApi();
-
   useEffect(() => {
     if (users?.email) {
       recoversItemApi(users?.email)
@@ -21,6 +20,8 @@ const RecoverItem = () => {
           setItems([]);
         });
     }
+
+    document.title = "Recovers-Item";
   }, [recoversItemApi, users?.email]);
 
   const toggleLayout = () => {

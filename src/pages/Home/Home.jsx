@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Banner from "../../section/Banner";
@@ -63,9 +63,14 @@ const AnimatedSection = ({ children }) => {
 const Home = () => {
   const { loading } = useContext(AuthContext);
 
+  useEffect(() => {
+    document.title = "Home";
+  });
+
   if (loading) {
     return <Loader />;
   }
+
   return (
     <>
       <motion.div
@@ -123,8 +128,7 @@ const Home = () => {
           </motion.div>
         </AnimatedSection>
 
-
-         <AnimatedSection>
+        <AnimatedSection>
           <motion.div variants={itemVariants}>
             <FAQSection />
           </motion.div>

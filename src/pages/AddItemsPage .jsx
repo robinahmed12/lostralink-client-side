@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 
 const AddItemsPage = () => {
   const { users } = useContext(AuthContext);
-  
 
   const [formData, setFormData] = useState({
     postType: "lost",
@@ -41,6 +40,8 @@ const AddItemsPage = () => {
       contactName: users?.displayName || "",
       contactEmail: users?.email || "",
     }));
+
+    document.title = "Add-Items";
   }, [users]);
 
   const handleChange = (e) => {
@@ -114,7 +115,6 @@ const AddItemsPage = () => {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-[#FFFAF0] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
