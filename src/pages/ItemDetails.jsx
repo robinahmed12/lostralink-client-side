@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import Loader from "../components/Loader";
 import useRecoversApi from "../Api/useRecoversApi";
+import RecoveryModal from "./RecoveryModal";
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -88,11 +87,6 @@ const ItemDetails = () => {
         "https://lostra-link-server.vercel.app/recoversItems",
         recoverData
       );
-
-      // 2. Update the item status in the allItems collection
-      await axiosSecure.patch(`/allItems/${item._id}`, {
-        status: "recovered",
-      });
 
       // Update local state
       setIsRecovered(true);
@@ -199,71 +193,18 @@ const ItemDetails = () => {
         </div>
       </div>
 
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-[#F0EAD6] rounded-lg shadow-xl max-w-md w-full p-6">
-            <h2 className="text-2xl font-bold text-[#3E2F1C] mb-4">
-              Report Recovery
-            </h2>
-            <form onSubmit={handleSubmitRecovery}>
-              <label className="block text-[#3E2F1C] mb-2 font-medium">
-                Recovered Location
-              </label>
-              <input
-                type="text"
-                name="recoveredLocation"
-                value={recoveredLocation}
-                onChange={handleInputChange}
-                required
-                className="w-full px-3 py-2 border border-[#9A8C7A] rounded-lg mb-4"
-              />
-              <label className="block text-[#3E2F1C] mb-2 font-medium">
-                Recovery Date
-              </label>
-              <DatePicker
-                selected={recoveredDate}
-                onChange={handleDateChange}
-                className="w-full px-3 py-2 border border-[#9A8C7A] rounded-lg mb-4"
-                required
-              />
-
-              {users && (
-                <div className="mb-4 bg-white p-3 rounded-lg">
-                  <p className="text-[#3E2F1C] font-medium">
-                    {users.displayName || "User"}
-                  </p>
-                  <p className="text-[#9A8C7A] text-sm">{users.email}</p>
-                </div>
-              )}
-
-              <div className="flex justify-end space-x-3 mt-4">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="text-[#3E2F1C]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting || isRecovered}
-                  className={`px-4 py-2 rounded-lg text-white ${
-                    isSubmitting || isRecovered
-                      ? "bg-[#9A8C7A]"
-                      : "bg-[#F4A261] hover:bg-[#e6914f]"
-                  }`}
-                >
-                  {isSubmitting
-                    ? "Submitting..."
-                    : isRecovered
-                    ? "Already Recovered"
-                    : "Submit Recovery"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <RecoveryModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        users={users}
+        handleSubmitRecovery={handleSubmitRecovery}
+        isSubmitting={isSubmitting}
+        isRecovered={isRecovered}
+        recoveredLocation={recoveredLocation}
+        recoveredDate={recoveredDate}
+        handleInputChange={handleInputChange}
+        handleDateChange={handleDateChange}
+      />
     </div>
   );
 };
