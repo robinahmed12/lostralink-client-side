@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaGoogle,
-  FaGithub,
   FaEnvelope,
   FaLock,
   FaEye,
@@ -13,7 +12,7 @@ import { Bounce, toast } from "react-toastify";
 import { motion } from "framer-motion";
 
 const LoginPage = () => {
-  const { state: locationState } = useLocation();
+  const {  location } = useLocation();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +26,7 @@ const LoginPage = () => {
 
     signInUser(email, password)
       .then(() => {
-        toast.success("🦄 Login successful", {
+       toast.success("🎉 Login successful! Welcome to Lost & Found", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -38,7 +37,8 @@ const LoginPage = () => {
           theme: "light",
           transition: Bounce,
         });
-        navigate(locationState?.from?.pathname || "/");
+        navigate(`${location?.state ?? "/"}`);
+        
       })
       .catch((error) => {
         toast.error(error.message, {
@@ -57,19 +57,19 @@ const LoginPage = () => {
     signInWithGoogle()
       .then((result) => {
         if (result.user) {
-          toast.success("🦄 Google Login successful", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
+          toast.success("🎉 Google Login successful! Welcome to Lost & Found", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
         }
-        navigate(locationState?.from?.pathname || "/");
+       navigate(`${location?.state ?? "/"}`);
       })
       .catch((error) => {
         console.error("Google login failed:", error);

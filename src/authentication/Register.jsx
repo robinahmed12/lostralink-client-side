@@ -66,7 +66,7 @@ const Register = () => {
           theme: "light",
           transition: Bounce,
         });
-        navigate(location?.state?.from || "/");
+        navigate(`${location?.state ?? "/"}`);
       }
     } catch (error) {
       toast.error(error.message, {

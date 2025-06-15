@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <nav className="bg-gradient-to-r from-[#F4A261] to-[#E76F51] py-2 shadow-lg sticky top-0 z-50 transition-all duration-500">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex md:justify-between justify-around items-center h-16">
           {/* Logo with subtle animation */}
           <div className="flex items-center">
             <NavLink
@@ -33,7 +33,7 @@ const Navbar = () => {
             >
               <header className="flex items-center p-4">
                 <div className="group-hover:rotate-12 transition-transform duration-300">
-                  <LostraLinkLogo size={60} />
+                  <LostraLinkLogo size={50} />
                 </div>
                 <h1 className="ml-3 text-2xl font-bold text-[#3E2F1C] group-hover:text-[#2A9D8F] transition-colors duration-300">
                   LostraLink
@@ -105,7 +105,7 @@ const Navbar = () => {
               <div className="relative group">
                 <NavLink
                   to="/login"
-                  className="px-4 py-2 rounded-full text-sm font-medium bg-[#3E2F1C] text-white hover:bg-[#2A9D8F] transition-all duration-300 transform hover:scale-105 shadow-md"
+                  className="px-8 hidden md:inline-block  py-2 rounded-lg text-sm font-medium bg-[#3E2F1C] text-white hover:bg-[#2A9D8F] transition-all duration-300 transform hover:scale-105 shadow-md"
                 >
                   Login
                 </NavLink>
@@ -273,7 +273,7 @@ const Navbar = () => {
           </div>
 
           {/* Enhanced Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden  flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-[#3E2F1C] hover:text-[#2A9D8F] focus:outline-none p-2 rounded-full hover:bg-[#F0EAD6]/50 transition-all duration-300"
@@ -295,7 +295,7 @@ const Navbar = () => {
                 </svg>
               ) : (
                 <svg
-                  className="h-6 w-6 transform hover:rotate-180 transition-transform duration-500"
+                  className="h-8 w-8 transform hover:rotate-180 transition-transform duration-500"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
