@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Header/Navbar";
-import { Outlet} from "react-router";
+import { Outlet, useLocation } from "react-router";
 import Footer from "../components/Footer/Footer";
 import { Bounce, ToastContainer } from "react-toastify";
 import Loader from "../components/Loader";
 
 const Layout = () => {
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [location]);
   return (
     <>
       <header>
@@ -14,6 +25,7 @@ const Layout = () => {
         </nav>
       </header>
       <main className="relative min-h-[calc(100vh-764px)]">
+        {loading && <Loader />}
         <Outlet />
 
         <ToastContainer

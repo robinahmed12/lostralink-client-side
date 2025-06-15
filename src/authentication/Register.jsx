@@ -1,10 +1,9 @@
 import { useContext, useState } from "react";
-import { Link,   useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
 import { Bounce, toast } from "react-toastify";
 import Lottie from "lottie-react";
-import loadingAnimation from "../assets/Animation - 1749544429039.json";
 
 const Register = () => {
   const { location } = useLocation();
@@ -146,15 +145,7 @@ const Register = () => {
               disabled={isLoading}
               className="w-full py-2 px-4 rounded-md font-medium bg-[#F4A261] text-[#3E2F1C] hover:shadow-md flex justify-center items-center"
             >
-              {isLoading ? (
-                <Lottie
-                  animationData={loadingAnimation}
-                  loop={true}
-                  style={{ width: 32, height: 32 }}
-                />
-              ) : (
-                "Register"
-              )}
+              Register
             </motion.button>
           </form>
 
@@ -165,6 +156,7 @@ const Register = () => {
                 to="/login"
                 className="font-medium hover:underline text-[#2A9D8F]"
               >
+                
                 Log in here
               </Link>
             </p>

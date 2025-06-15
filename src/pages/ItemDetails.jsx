@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import Loader from "../components/Loader";
 
 const ItemDetails = () => {
   // const { users } = useContext(AuthContext);
@@ -16,7 +17,6 @@ const ItemDetails = () => {
   const [loading, setLoading] = useState(true);
   const [unauthorized, setUnauthorized] = useState(false);
   const [showModal, setShowModal] = useState(false);
- 
 
   const [recoveryData, setRecoveryData] = useState({
     recoveredLocation: "",
@@ -27,12 +27,14 @@ const ItemDetails = () => {
   const [isRecovered, setIsRecovered] = useState(false);
 
   const { recoveredLocation, recoveredDate } = recoveryData;
-   const {users} = useContext(AuthContext)
-  
+  const { users } = useContext(AuthContext);
+
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axiosSecure.get(`/allItems/${id}?email= ${users?.email}`);
+        const res = await axiosSecure.get(
+          `/allItems/${id}?email= ${users?.email}`
+        );
         setItem(res.data);
         setIsRecovered(res.data.status === "recovered");
       } catch (err) {
@@ -48,7 +50,7 @@ const ItemDetails = () => {
     };
 
     fetchItem();
-  }, [id, axiosSecure, users?.email]);
+  }, [id, axiosSecure, users?.email, loading]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -96,14 +98,6 @@ const ItemDetails = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-xl">
-        Loading...
-      </div>
-    );
-  }
-
   if (unauthorized || error || !item) {
     return (
       <div className="min-h-screen bg-[#FFFAF0] flex items-center justify-center">
@@ -136,6 +130,8 @@ const ItemDetails = () => {
     contactName,
     contactEmail,
   } = item;
+
+
 
   return (
     <div className="min-h-screen bg-[#FFFAF0] py-8 px-4 sm:px-6 lg:px-8">
