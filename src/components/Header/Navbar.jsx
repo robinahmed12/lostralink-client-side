@@ -47,7 +47,7 @@ const Navbar = () => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-full text-lg font-medium relative overflow-hidden ${
+                `px-4 py-2 rounded-full lg:text-lg font-medium relative overflow-hidden ${
                   isActive
                     ? "bg-[#2A9D8F] text-white"
                     : "text-[#3E2F1C] hover:bg-[#F0EAD6]/80 hover:text-[#3E2F1C]"
@@ -65,7 +65,7 @@ const Navbar = () => {
             <NavLink
               to="/allItems"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-full text-lg font-medium relative overflow-hidden ${
+                `px-4 py-2 rounded-full lg:text-lg font-medium relative overflow-hidden ${
                   isActive
                     ? "bg-[#2A9D8F] text-white"
                     : "text-[#3E2F1C] hover:bg-[#F0EAD6]/80 hover:text-[#3E2F1C]"
@@ -101,7 +101,7 @@ const Navbar = () => {
             <NavLink
               to="/contact"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-full text-lg font-medium relative overflow-hidden ${
+                `px-4 py-2 rounded-full lg:text-lg font-medium relative overflow-hidden ${
                   isActive
                     ? "bg-[#2A9D8F] text-white"
                     : "text-[#3E2F1C] hover:bg-[#F0EAD6]/80 hover:text-[#3E2F1C]"
