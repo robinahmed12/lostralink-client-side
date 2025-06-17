@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <nav className="bg-gradient-to-r from-[#F4A261] to-[#E76F51] py-2 shadow-lg sticky top-0 z-50 transition-all duration-500">
       <div className="max-w-7xl mx-auto">
-        <div className="flex md:justify-between justify-around items-center h-16">
+        <div className="flex justify-between items-center h-16">
           {/* Logo with subtle animation */}
           <div className="flex items-center">
             <NavLink
@@ -33,7 +33,7 @@ const Navbar = () => {
             >
               <header className="flex items-center p-4">
                 <div className="group-hover:rotate-12 transition-transform duration-300">
-                  <LostraLinkLogo size={50} />
+                  <LostraLinkLogo size={55} />
                 </div>
                 <h1 className="ml-3 text-2xl font-bold text-[#3E2F1C] group-hover:text-[#2A9D8F] transition-colors duration-300">
                   LostraLink
@@ -43,11 +43,11 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-2">
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-full text-sm font-medium relative overflow-hidden ${
+                `px-4 py-2 rounded-full text-lg font-medium relative overflow-hidden ${
                   isActive
                     ? "bg-[#2A9D8F] text-white"
                     : "text-[#3E2F1C] hover:bg-[#F0EAD6]/80 hover:text-[#3E2F1C]"
@@ -65,7 +65,7 @@ const Navbar = () => {
             <NavLink
               to="/allItems"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-full text-sm font-medium relative overflow-hidden ${
+                `px-4 py-2 rounded-full text-lg font-medium relative overflow-hidden ${
                   isActive
                     ? "bg-[#2A9D8F] text-white"
                     : "text-[#3E2F1C] hover:bg-[#F0EAD6]/80 hover:text-[#3E2F1C]"
@@ -83,7 +83,7 @@ const Navbar = () => {
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-full text-sm font-medium relative overflow-hidden ${
+                `px-4 py-2 rounded-full text-lg font-medium relative overflow-hidden ${
                   isActive
                     ? "bg-[#2A9D8F] text-white"
                     : "text-[#3E2F1C] hover:bg-[#F0EAD6]/80 hover:text-[#3E2F1C]"
@@ -91,6 +91,24 @@ const Navbar = () => {
               }
             >
               <span className="relative z-10">About Us</span>
+              {({ isActive }) =>
+                !isActive && (
+                  <span className="absolute inset-0 bg-[#F4A261] rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 origin-center"></span>
+                )
+              }
+            </NavLink>
+
+            <NavLink
+              to="/contact"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-full text-lg font-medium relative overflow-hidden ${
+                  isActive
+                    ? "bg-[#2A9D8F] text-white"
+                    : "text-[#3E2F1C] hover:bg-[#F0EAD6]/80 hover:text-[#3E2F1C]"
+                } transition-all duration-300 group`
+              }
+            >
+              <span className="relative z-10">Contact Us</span>
               {({ isActive }) =>
                 !isActive && (
                   <span className="absolute inset-0 bg-[#F4A261] rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 origin-center"></span>
@@ -105,7 +123,7 @@ const Navbar = () => {
               <div className="relative group">
                 <NavLink
                   to="/login"
-                  className="px-8 hidden md:inline-block  py-2 rounded-lg text-sm font-medium bg-[#3E2F1C] text-white hover:bg-[#2A9D8F] transition-all duration-300 transform hover:scale-105 shadow-md"
+                  className="px-8 hidden md:inline-block  py-2 rounded-lg text-lg font-medium bg-[#3E2F1C] text-white hover:bg-[#2A9D8F] transition-all duration-300 transform hover:scale-105 shadow-md"
                 >
                   Login
                 </NavLink>
@@ -117,7 +135,7 @@ const Navbar = () => {
               <>
                 <button
                   onClick={handleLogOut}
-                  className="hidden md:block px-4 py-2 rounded-full text-sm font-medium bg-[#E76F51] text-white hover:bg-[#d45a3d] transform hover:scale-105 transition-all duration-300 shadow-md"
+                  className="hidden md:block px-4 py-2 rounded-full text-lg font-medium bg-[#E76F51] text-white hover:bg-[#d45a3d] transform hover:scale-105 transition-all duration-300 shadow-md"
                 >
                   Logout
                 </button>

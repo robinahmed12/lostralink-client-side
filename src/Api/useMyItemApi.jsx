@@ -11,7 +11,7 @@ const useMyItemApi = () => {
         return res.data;
       } catch (error) {
         console.error("Error in recoversItemApi:", error);
-        throw error; // Re-throw the error for the component to handle
+        throw error; 
       }
     },
     [axiosSecure]

@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
-import Loader from "../components/Loader";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const ItemsTable = ({ item, setItems }) => {
+  const axiosSecure = useAxiosSecure();
   const { postType, title, category, description, _id } = item;
+  const { users } = useContext(AuthContext);
 
   const handleDelete = async (itemId) => {
     const result = await Swal.fire({
@@ -19,15 +21,14 @@ const ItemsTable = ({ item, setItems }) => {
     });
 
     if (!result.isConfirmed) return;
+    let response;
+    if (users) {
+      response = await axiosSecure.delete(
+        `/allItems/${itemId}?email=${users?.email}`
+      );
+    }
 
-    const res = await fetch(
-      `https://lostra-link-server.vercel.app/allItems/${itemId}`,
-      {
-        method: "DELETE",
-      }
-    );
-
-    if (!res.ok) {
+    if (response.status !== 200) {
       return Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -45,8 +46,6 @@ const ItemsTable = ({ item, setItems }) => {
 
     setItems((prevItems) => prevItems.filter((item) => item._id !== itemId));
   };
-
-  // if (loading) return <Loader />;
 
   return (
     <tr className="hover:bg-[#F4A261]/10 transition-all duration-200">

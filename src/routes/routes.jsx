@@ -12,6 +12,7 @@ import MyItems from "../pages/MyItems";
 import UpdateItem from "../pages/UpdateItem";
 import NotFoundPage from "../components/NotFoundPage";
 import AboutUs from "../pages/AboutUs";
+import ContactPage from "../components/ContactPage";
 
 export const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
         path: "/about",
         element: <AboutUs />,
       },
+      {
+        path: "/contact",
+        element: <ContactPage/>
+      }
     ],
   },
 ]);

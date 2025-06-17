@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
+
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import Loader from "../components/Loader";
 import useRecoversApi from "../Api/useRecoversApi";
 import RecoveryModal from "./RecoveryModal";
+import { toast } from "react-toastify";
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -13,6 +14,8 @@ const ItemDetails = () => {
   const { recoversItemApi } = useRecoversApi();
 
   const [item, setItem] = useState(null);
+  console.log(item);
+
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [recoveryData, setRecoveryData] = useState({
@@ -83,15 +86,17 @@ const ItemDetails = () => {
 
     try {
       // 1. Save recovery record
-      await axios.post(
-        "https://lostra-link-server.vercel.app/recoversItems",
+      const response = await axiosSecure.post(
+        `/recoversItems?email=${users?.email}`,
         recoverData
       );
 
-      // Update local state
-      setIsRecovered(true);
-      setItem((prev) => ({ ...prev, status: "recovered" }));
-      setShowModal(false);
+      if (response.status === 200 || response.status === 201) {
+        // 2. Update local state
+        setIsRecovered(true);
+        setItem((prev) => ({ ...prev, status: "recovered" }));
+        setShowModal(false);
+      }
     } catch (error) {
       console.error("Recovery submission failed:", error);
     } finally {

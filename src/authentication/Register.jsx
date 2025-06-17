@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
@@ -24,9 +24,45 @@ const Register = () => {
 
   const validatePassword = (password) => {
     const errors = [];
-    if (!/[a-z]/.test(password)) errors.push("lowercase letter");
-    if (!/[A-Z]/.test(password)) errors.push("uppercase letter");
+
+    if (!/[a-z]/.test(password)) errors.push("a lowercase letter");
+    if (!/[A-Z]/.test(password)) errors.push("an uppercase letter");
     if (password.length < 6) errors.push("at least 6 characters");
+
+    return errors;
+  };
+
+  const validateForm = () => {
+    const { name, email, password, photoURL } = formData;
+    const errors = [];
+
+    // Name validation
+    if (!name.trim()) {
+      errors.push("Full name is required");
+    }
+
+    // Email validation
+    if (!email.trim()) {
+      errors.push("Email is required");
+    }
+
+    // Password validation
+    if (!password) {
+      errors.push("Password is required");
+    }
+
+    // Photo URL validation (only if provided)
+    if (!photoURL.trim()) {
+      errors.push("Profile photo URL is required");
+    } else {
+      try {
+        new URL(photoURL);
+      } catch (e) {
+        errors.push("Please enter a valid URL for profile photo");
+        console.log(e);
+      }
+    }
+
     return errors;
   };
 
@@ -41,6 +77,18 @@ const Register = () => {
         position: "top-center",
         theme: "light",
         transition: Bounce,
+      });
+      return;
+    }
+
+    const validationErrors = validateForm();
+
+    if (validationErrors.length > 0) {
+      toast.error(validationErrors[0], {
+        position: "top-center",
+        theme: "light",
+        transition: Bounce,
+        autoClose: 5000,
       });
       return;
     }
@@ -78,6 +126,10 @@ const Register = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    document.title = "Register";
+  });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FFFAF0] p-4">
@@ -132,7 +184,6 @@ const Register = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none bg-[#FFFAF0] text-[#3E2F1C] placeholder-[#9A8C7A]/70"
                     placeholder="John Doe"
                   />
@@ -168,7 +219,6 @@ const Register = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none bg-[#FFFAF0] text-[#3E2F1C] placeholder-[#9A8C7A]/70"
                     placeholder="your@email.com"
                   />
@@ -204,7 +254,6 @@ const Register = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none bg-[#FFFAF0] text-[#3E2F1C] placeholder-[#9A8C7A]/70"
                     placeholder="••••••••"
                   />
@@ -229,7 +278,7 @@ const Register = () => {
                 onBlur={() => setActiveField(null)}
               >
                 <label className="block mb-2 text-sm font-medium text-[#3E2F1C]">
-                  Profile Photo URL (Optional)
+                  Profile Photo URL
                 </label>
                 <motion.div
                   className="relative"

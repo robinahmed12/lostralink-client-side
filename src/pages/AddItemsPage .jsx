@@ -3,11 +3,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const AddItemsPage = () => {
   const { users } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
 
   const [formData, setFormData] = useState({
     postType: "lost",
@@ -85,14 +86,19 @@ const AddItemsPage = () => {
     };
 
     try {
-      await axios.post("https://lostra-link-server.vercel.app/items", itemData);
-      Swal.fire({
-        position: "top-center",
-        icon: "success",
-        title: "Item posted successfully",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      const response = await axiosSecure.post(
+        `/items?email=${users?.email}`,
+        itemData
+      );
+      if (response.status === 200) {
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "Item posted successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
 
       setFormData((prev) => ({
         postType: prev.postType,

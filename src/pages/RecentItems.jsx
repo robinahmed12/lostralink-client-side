@@ -14,27 +14,8 @@ const RecentItems = () => {
           "https://lostra-link-server.vercel.app/recentItems"
         );
 
-        // First check if response is OK
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(
-            errorData.message || `HTTP error! status: ${response.status}`
-          );
-        }
-
-        // Then verify the content type
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          throw new Error("Response was not JSON");
-        }
-
         const data = await response.json();
-        console.log("Received data:", data); // Debugging log
-
-        // Validate data structure
-        if (!Array.isArray(data)) {
-          throw new Error("Expected array but got different data type");
-        }
+        console.log("Received data:", data); 
 
         setRecentItems(data);
       } catch (err) {

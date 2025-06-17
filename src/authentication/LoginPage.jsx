@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaGoogle,
@@ -23,6 +23,8 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+      
 
     signInUser(email, password)
       .then(() => {
@@ -107,6 +109,10 @@ const LoginPage = () => {
       },
     },
   };
+
+  useEffect(()=>{
+        document.title = "Login"
+      })
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFFAF0] to-[#F0EAD6] p-4">

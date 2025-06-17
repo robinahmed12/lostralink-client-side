@@ -91,18 +91,12 @@ const UpdateItem = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(
-        `https://lostra-link-server.vercel.app/update/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+      const response = await axiosSecure.put(
+        `/update/${id}?email=${users?.email}`,
+        formData
       );
 
-      if (response.ok) {
+      if (response.status === 200 || response.status === 204) {
         Swal.fire({
           position: "top-center",
           icon: "success",
@@ -110,7 +104,7 @@ const UpdateItem = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate(-1); // Navigate back after successful update
+        navigate(-1);
       } else {
         throw new Error("Update failed - no changes made");
       }
