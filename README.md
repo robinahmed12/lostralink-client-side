@@ -33,7 +33,110 @@ The goal of LostraLink is to provide a digital space where lost items can find t
 
 ---
 
+🙌 Contributing
+Pull requests are welcome! If you have suggestions for improvements or new features:
+
+Fork the repo
+
+Create your feature branch (git checkout -b feature/amazing-feature)
+
+Commit your changes (git commit -m 'Add some amazing feature')
+
+Push to the branch (git push origin feature/amazing-feature)
+
+Open a Pull Request
+
+
+
+
+<br>
+
+
+🚀 Local Development Setup
+Prerequisites
+Node.js (v18 or later recommended)
+<br>
+
+npm (comes with Node.js)
+
+<br>
+
+or Yarn
+
+Git (for cloning the repository)
+<br>
+
+Quick Start Guide
+<br>
+
+Clone the repository
+
+<br>
+
+bash
+<br>
+[git clone https://github.com/your-username/repo-name.git](https://github.com/robinahmed12/lostralink-client-side.git)
+<br>
+
+cd repo-name
+
+<br>
+Install dependencies
+
+bash
+npm install
+
+<br>
+# or
+yarn install
+<br>
+
+Start the development server
+
+bash
+npm run dev
+# or
+yarn dev
+<br>
+
+Open in your browser
+<br>
+
+The app will typically run on:
+
+
+http://localhost:5173
+(Check your terminal for the exact URL)
+
+Alternative Commands
+<br>
+
+Production build:
+
+bash
+<br>
+npm run build
+<br>
+
+Preview production build:
+
+bash
+<br>
+
+npm run preview
+
+
+
+
+<br>
+
+
+
 ## 📦 Tech Stack & Dependencies
+
+
+
+
 
 Below are the major libraries and packages used in the **client-side** of the application:
 
@@ -59,14 +162,5 @@ Below are the major libraries and packages used in the **client-side** of the ap
 
 
 
-🙌 Contributing
-Pull requests are welcome! If you have suggestions for improvements or new features, feel free to fork the repo and submit a PR.
 
-📄 License
-This project is open-source and available under the MIT License.
-
-✨ Acknowledgments
-Inspired by the need to reunite people with their valuable items
-
-Thanks to all the open-source libraries that power this app
 
