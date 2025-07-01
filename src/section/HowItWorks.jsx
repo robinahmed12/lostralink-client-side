@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FaSearch,
   FaBullhorn,
@@ -8,6 +8,7 @@ import {
   FaMapMarkerAlt,
   FaShieldAlt,
 } from "react-icons/fa";
+import Container from "../components/Container/Container";
 
 const HowItWorks = () => {
   const steps = [
@@ -58,24 +59,32 @@ const HowItWorks = () => {
     },
   ];
 
+  
+
   return (
-    <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-[#FFFAF0]">
-      <div className="">
-        <div className="text-center mb-12">
+    <section className="py-12 bg-[#FFFAF0]">
+      <Container>
+        <div className="text-center mb-12" data-aos="fade-up">
           <h2 className="text-3xl font-bold text-[#3E2F1C] sm:text-4xl">
             How It Works
           </h2>
-          <p className="mt-4 text-lg text-[#9A8C7A] max-w-2xl mx-auto">
+          <p
+            className="mt-4 text-lg text-[#9A8C7A] max-w-2xl mx-auto"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
             Our simple 3-step process makes it easy to report and recover lost
             items.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {steps.map((step) => (
+          {steps.map((step, index) => (
             <div
               key={step.id}
               className={`relative p-6 rounded-lg border-2 ${step.borderColor} ${step.bgColor} ${step.hoverBg} transition-all duration-300 transform hover:-translate-y-2 shadow-lg hover:shadow-xl overflow-hidden`}
+              data-aos="fade-up"
+              data-aos-delay={index * 150}
             >
               <div className="absolute top-0 left-0 w-full h-1 ${step.bgColor}"></div>
               <div className="flex items-center mb-4">
@@ -89,8 +98,13 @@ const HowItWorks = () => {
               </div>
               <p className="text-[#3E2F1C] mb-4">{step.description}</p>
               <ul className="space-y-2">
-                {step.features.map((feature, index) => (
-                  <li key={index} className="flex items-start">
+                {step.features.map((feature, featureIndex) => (
+                  <li
+                    key={featureIndex}
+                    className="flex items-start"
+                    data-aos="fade-up"
+                    data-aos-delay={index * 150 + featureIndex * 50}
+                  >
                     <FaCheckCircle
                       className={`mt-1 mr-2 flex-shrink-0 ${
                         step.id === 1
@@ -149,12 +163,16 @@ const HowItWorks = () => {
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        <div
+          className="mt-12 text-center"
+          data-aos="fade-up"
+          data-aos-delay="300"
+        >
           <button className="px-6 py-3 bg-[#F4A261] hover:bg-[#E76F51] text-white font-medium rounded-lg shadow-md transition-all duration-300 transform hover:scale-105">
             Get Started Now
           </button>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

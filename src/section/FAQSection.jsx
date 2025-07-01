@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
+import Container from "../components/Container/Container";
 
 const FAQSection = () => {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -47,17 +48,26 @@ const FAQSection = () => {
   ];
 
   return (
-    <section className="py-12 px-4 max-w-7xl mx-auto md:px-8 lg:px-16 bg-[#FFFAF0]">
-      <div className="">
-        <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#3E2F1C] text-center">
-          Frequently Asked Questions
-        </h2>
+    <section className="py-12 bg-[#FFFAF0]">
+      <Container>
+        <div className="text-center mb-8" data-aos="fade-up">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#3E2F1C]">
+            Frequently Asked Questions
+          </h2>
+          <div
+            className="w-24 h-1 bg-gradient-to-r from-[#F4A261] to-[#2A9D8F] mx-auto mt-4 rounded-full"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          />
+        </div>
 
         <div className="space-y-4">
           {faqs.map((faq, index) => (
             <div
               key={index}
               className="bg-[#F0EAD6] rounded-lg overflow-hidden transition-all duration-300"
+              data-aos="fade-up"
+              data-aos-delay={index * 50}
             >
               <button
                 onClick={() => toggleFAQ(index)}
@@ -90,15 +100,23 @@ const FAQSection = () => {
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        <div
+          className="mt-12 text-center"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
           <p className="text-[#9A8C7A] mb-6">
             Still have questions? Contact our support team for assistance.
           </p>
-          <button className="bg-[#2A9D8F] hover:bg-[#238278] text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+          <button
+            className="bg-[#2A9D8F] hover:bg-[#238278] text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
+            data-aos="zoom-in"
+            data-aos-delay="150"
+          >
             Contact Support
           </button>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

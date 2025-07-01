@@ -1,7 +1,7 @@
 import React from "react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
-
+import Container from "../components/Container/Container";
 const Counter = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -41,10 +41,10 @@ const Counter = () => {
   return (
     <section
       ref={ref}
-      className="py-12 max-w-7xl mx-auto md:py-20 mt-20 bg-[#F0EAD6]"
+      className="py-12 md:py-20 mt-20 bg-[#F0EAD6]"
       style={{ fontFamily: "'Your Warm Font', sans-serif" }}
     >
-      <div className="container mx-auto  px-4">
+      <Container maxWidth="7xl" paddingX="4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#3E2F1C]">
           Our Community Impact
         </h2>
@@ -80,7 +80,7 @@ const Counter = () => {
             Share Your Story
           </button>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

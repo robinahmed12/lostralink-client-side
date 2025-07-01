@@ -13,6 +13,7 @@ import UpdateItem from "../pages/UpdateItem";
 import NotFoundPage from "../components/NotFoundPage";
 import AboutUs from "../pages/AboutUs";
 import ContactPage from "../components/ContactPage";
+import BlogPage from "../pages/BlogPage";
 
 export const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactPage/>
+      },
+      {
+        path: "/blog",
+        element: <BlogPage/>
       }
     ],
   },

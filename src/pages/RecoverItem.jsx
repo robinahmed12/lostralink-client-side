@@ -6,7 +6,7 @@ import useRecoversApi from "../Api/useRecoversApi";
 const RecoverItem = () => {
   const [items, setItems] = useState([]);
 
-  const [layout, setLayout] = useState("card"); 
+  const [layout, setLayout] = useState("card");
   const { users } = useContext(AuthContext);
   const { recoversItemApi } = useRecoversApi();
   useEffect(() => {
@@ -30,7 +30,7 @@ const RecoverItem = () => {
 
   if (!items || items.length === 0) {
     return (
-      <div className="min-h-[50vh] flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-[50vh] mt-20 flex flex-col items-center justify-center p-6 text-center">
         <div className="max-w-md">
           <svg
             className="w-20 h-20 mx-auto text-[#9A8C7A]"

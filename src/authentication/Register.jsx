@@ -132,7 +132,7 @@ const Register = () => {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FFFAF0] p-4">
+    <div className="min-h-screen mt-20 flex items-center justify-center bg-[#FFFAF0] p-4">
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

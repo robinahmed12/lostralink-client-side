@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import "aos/dist/aos.css";
+import Container from "../components/Container/Container";
 
 const RecentItems = () => {
   const [recentItems, setRecentItems] = useState([]);
@@ -28,36 +29,23 @@ const RecentItems = () => {
 
   if (loading) {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="min-h-[60vh] flex flex-col items-center justify-center"
-      >
+      <Container className="min-h-[60vh] flex flex-col items-center justify-center">
         <div className="relative w-20 h-20">
-          <motion.div
-            className="absolute w-full h-full rounded-full border-4 border-t-[#F4A261] border-r-[#2A9D8F] border-b-[#E76F51] border-l-[#F0EAD6]"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-          />
+          <div className="absolute w-full h-full rounded-full border-4 border-t-[#F4A261] border-r-[#2A9D8F] border-b-[#E76F51] border-l-[#F0EAD6] animate-spin" />
           <div className="absolute inset-4 rounded-full bg-[#F4A261] opacity-20" />
         </div>
-        <motion.p
-          className="mt-6 text-xl font-medium text-[#3E2F1C]"
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
+        <p className="mt-6 text-xl font-medium text-[#3E2F1C] animate-pulse">
           Gathering lost treasures...
-        </motion.p>
-      </motion.div>
+        </p>
+      </Container>
     );
   }
 
   if (error) {
     return (
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
+      <Container
         className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center"
+        data-aos="fade-up"
       >
         <div className="w-16 h-16 rounded-full bg-[#E76F51] flex items-center justify-center mb-4">
           <svg
@@ -79,24 +67,21 @@ const RecentItems = () => {
           Oops! Something went wrong
         </h2>
         <p className="text-[#9A8C7A] mb-6 max-w-md">{error}</p>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           onClick={() => window.location.reload()}
-          className="bg-gradient-to-r from-[#F4A261] to-[#E76F51] text-white font-medium py-2 px-8 rounded-full shadow-md"
+          className="bg-gradient-to-r from-[#F4A261] to-[#E76F51] text-white font-medium py-2 px-8 rounded-full shadow-md hover:scale-105 transition-transform"
         >
           Try Again
-        </motion.button>
-      </motion.div>
+        </button>
+      </Container>
     );
   }
 
   if (recentItems.length === 0) {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+      <Container
         className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center"
+        data-aos="fade-up"
       >
         <div className="w-24 h-24 rounded-full bg-[#F0EAD6] flex items-center justify-center mb-6">
           <svg
@@ -120,31 +105,20 @@ const RecentItems = () => {
         <p className="text-[#9A8C7A] mb-6 max-w-md">
           Be the first to report a found or lost item in your community
         </p>
-        <motion.div whileHover={{ scale: 1.05 }}>
-          <Link
-            to="/report-found"
-            className="inline-block bg-gradient-to-r from-[#2A9D8F] to-[#1E8C7F] text-white font-medium py-2 px-8 rounded-full shadow-md"
-          >
-            Report an Item
-          </Link>
-        </motion.div>
-      </motion.div>
+        <Link
+          to="/report-found"
+          className="inline-block bg-gradient-to-r from-[#2A9D8F] to-[#1E8C7F] text-white font-medium py-2 px-8 rounded-full shadow-md hover:scale-105 transition-transform"
+        >
+          Report an Item
+        </Link>
+      </Container>
     );
   }
 
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="py-16 lg:py-24 bg-[#FFFAF0] px-4"
-    >
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-center mb-12"
-        >
+    <section className="py-16 lg:py-24 bg-[#FFFAF0]">
+      <Container>
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[#3E2F1C] mb-3">
             Recently <span className="text-[#F4A261]">Lost</span> &{" "}
             <span className="text-[#2A9D8F]">Found</span>
@@ -154,52 +128,40 @@ const RecentItems = () => {
             Items recently reported by our community members. Help reunite lost
             items with their owners.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {recentItems.map((item, index) => (
-            <motion.div
-              key={item._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
+            <div key={item._id} data-aos="fade-up" data-aos-delay={index * 100}>
               <ItemCard item={item} />
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        <motion.div
-          className="text-center mt-16"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <motion.div whileHover={{ scale: 1.05 }}>
-            <Link
-              to="/allItems"
-              className="inline-block bg-gradient-to-r from-[#F4A261] to-[#E76F51] text-white font-bold py-3 px-10 rounded-full text-lg shadow-lg hover:shadow-xl transition-all"
+        <div className="text-center mt-16" data-aos="fade-up">
+          <Link
+            to="/allItems"
+            className="inline-block bg-gradient-to-r from-[#F4A261] to-[#E76F51] text-white font-bold py-3 px-10 rounded-full text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+          >
+            Browse All Items
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 inline-block ml-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              Browse All Items
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 inline-block ml-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                />
-              </svg>
-            </Link>
-          </motion.div>
-        </motion.div>
-      </div>
-    </motion.section>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
+            </svg>
+          </Link>
+        </div>
+      </Container>
+    </section>
   );
 };
 
@@ -217,17 +179,17 @@ const ItemCard = ({ item }) => {
   };
 
   return (
-    <motion.div whileHover={{ y: -5 }} className="h-full">
+    <div
+      className="h-full hover:-translate-y-1 transition-transform duration-300"
+
+    >
       <div className="bg-[#F0EAD6] rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 h-full flex flex-col border border-[#e2d9c0]">
         {/* Image with status ribbon */}
         <div className="relative h-48 overflow-hidden">
-          <motion.img
+          <img
             src={itemData.image}
             alt={itemData.itemName}
-            className="w-full h-full object-cover"
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.1 }}
-            transition={{ duration: 0.5 }}
+            className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
             onError={(e) => {
               e.target.src = "/placeholder-item.jpg";
             }}
@@ -270,32 +232,30 @@ const ItemCard = ({ item }) => {
               </svg>
               {itemData.date}
             </span>
-            <motion.div whileHover={{ x: 2 }}>
-              <Link
-                to={`/details/${itemData._id}`}
-                className="flex items-center text-sm font-semibold text-[#F4A261] hover:text-[#E76F51] transition-colors"
+            <Link
+              to={`/details/${itemData._id}`}
+              className="flex items-center text-sm font-semibold text-[#F4A261] hover:text-[#E76F51] transition-colors"
+            >
+              Details
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 ml-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                Details
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </Link>
-            </motion.div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </Link>
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {  } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaBriefcase,
@@ -13,6 +13,8 @@ import {
   FaUmbrella,
 } from "react-icons/fa";
 import Marquee from "react-fast-marquee";
+import Container from "../components/Container/Container";
+
 const CategoriesSection = () => {
   const navigate = useNavigate();
 
@@ -74,19 +76,28 @@ const CategoriesSection = () => {
   };
 
   return (
-    <section className="py-12 max-w-7xl mx-auto bg-[#FFFAF0]">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-[#3E2F1C] mb-8 text-center">
-          Popular Categories
-        </h2>
+    <section className="py-12 bg-[#FFFAF0]">
+      <Container paddingY="12">
+        <div className="text-center mb-8" data-aos="fade-up">
+          <h2 className="text-3xl font-bold text-[#3E2F1C]">
+            Popular Categories
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-[#F4A261] to-[#2A9D8F] mx-auto mt-4 rounded-full" />
+        </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-12">
+        <div
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-12"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
           {categories.map((category, index) => (
             <div
               key={index}
               onClick={() => handleCategoryClick(category.name)}
               className={`${category.color} bg-opacity-80 hover:bg-opacity-100 p-6 rounded-lg shadow-md cursor-pointer transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg flex flex-col items-center justify-center text-[#3E2F1C]`}
+              data-aos="zoom-in"
+              data-aos-delay={300 + index * 50}
             >
               <div className="mb-3">{category.icon}</div>
               <h3 className="font-medium text-center">{category.name}</h3>
@@ -95,14 +106,14 @@ const CategoriesSection = () => {
         </div>
 
         {/* Marquee Section */}
-        <Marquee>
-          <div className="bg-[#F0EAD6] rounded-lg p-4 overflow-hidden">
-            <div className="flex items-center">
-              <h3 className="text-[#3E2F1C] font-bold mr-4 whitespace-nowrap">
-                Recently Found Items:
-              </h3>
-              <div className="marquee-container relative w-full overflow-hidden">
-                <div className="marquee-content flex whitespace-nowrap animate-marquee">
+        <div data-aos="fade-up" data-aos-delay="400">
+          <Marquee>
+            <div className="bg-[#F0EAD6] rounded-lg p-4 overflow-hidden">
+              <div className="flex items-center">
+                <h3 className="text-[#3E2F1C] font-bold mr-4 whitespace-nowrap">
+                  Recently Found Items:
+                </h3>
+                <div className="marquee-content flex whitespace-nowrap">
                   <span className="mx-4 text-[#9A8C7A]">
                     🎒 Leather backpack found near Central Park
                   </span>
@@ -121,9 +132,9 @@ const CategoriesSection = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </Marquee>
-      </div>
+          </Marquee>
+        </div>
+      </Container>
     </section>
   );
 };

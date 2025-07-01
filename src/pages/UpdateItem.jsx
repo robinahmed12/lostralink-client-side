@@ -154,7 +154,7 @@ const UpdateItem = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFAF0] py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen mt-20 bg-[#FFFAF0] py-8 px-4 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

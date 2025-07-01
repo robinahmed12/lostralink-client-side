@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Container from "../components/Container/Container";
 
 const PostItemSection = () => {
   const [activeTab, setActiveTab] = useState("lost");
@@ -10,8 +11,8 @@ const PostItemSection = () => {
   };
 
   return (
-    <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-[#FFFAF0]">
-      <div className="">
+    <section className="py-12 bg-[#FFFAF0]" data-aos="fade-up">
+      <Container>
         <div className="bg-[#F0EAD6] rounded-xl shadow-md overflow-hidden p-6 md:p-8">
           <h2 className="text-2xl md:text-3xl font-bold text-[#3E2F1C] mb-4">
             Help someone or get help fast
@@ -47,7 +48,11 @@ const PostItemSection = () => {
 
           {/* Steps */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div className="bg-[#FFFAF0] p-4 rounded-lg border border-[#F4A261]">
+            <div
+              className="bg-[#FFFAF0] p-4 rounded-lg border border-[#F4A261]"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
               <div className="flex items-center mb-2">
                 <span className="bg-[#F4A261] text-white rounded-full w-6 h-6 flex items-center justify-center mr-2">
                   1
@@ -56,7 +61,11 @@ const PostItemSection = () => {
               </div>
               <p className="text-sm text-[#9A8C7A]">Describe your item</p>
             </div>
-            <div className="bg-[#FFFAF0] p-4 rounded-lg border border-[#2A9D8F]">
+            <div
+              className="bg-[#FFFAF0] p-4 rounded-lg border border-[#2A9D8F]"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
               <div className="flex items-center mb-2">
                 <span className="bg-[#2A9D8F] text-white rounded-full w-6 h-6 flex items-center justify-center mr-2">
                   2
@@ -65,7 +74,11 @@ const PostItemSection = () => {
               </div>
               <p className="text-sm text-[#9A8C7A]">Where it was lost/found</p>
             </div>
-            <div className="bg-[#FFFAF0] p-4 rounded-lg border border-[#E76F51]">
+            <div
+              className="bg-[#FFFAF0] p-4 rounded-lg border border-[#E76F51]"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
               <div className="flex items-center mb-2">
                 <span className="bg-[#E76F51] text-white rounded-full w-6 h-6 flex items-center justify-center mr-2">
                   3
@@ -84,16 +97,26 @@ const PostItemSection = () => {
                 ? "bg-[#F4A261] hover:bg-[#E76F51]"
                 : "bg-[#2A9D8F] hover:bg-[#21867A]"
             }`}
+            data-aos="zoom-in"
+            data-aos-delay="400"
           >
             + Post {activeTab === "lost" ? "Lost" : "Found"} Item
           </button>
 
-          <div className="mt-6 flex flex-col sm:flex-row justify-between items-center text-sm text-[#9A8C7A]">
+          <div
+            className="mt-6 flex flex-col sm:flex-row justify-between items-center text-sm text-[#9A8C7A]"
+            data-aos="fade-up"
+            data-aos-delay="500"
+          >
             <p>Only 3 simple steps • Takes less than 60 seconds!</p>
-            <p className="mt-2 sm:mt-0"> login needed to post</p>
+            <p className="mt-2 sm:mt-0">Login needed to post</p>
           </div>
 
-          <div className="mt-8 p-4 bg-[#FFFAF0] rounded-lg border border-[#2A9D8F]">
+          <div
+            className="mt-8 p-4 bg-[#FFFAF0] rounded-lg border border-[#2A9D8F]"
+            data-aos="fade-up"
+            data-aos-delay="600"
+          >
             <h3 className="font-bold text-[#3E2F1C] mb-2">
               What happens after posting?
             </h3>
@@ -104,7 +127,7 @@ const PostItemSection = () => {
             </ul>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
