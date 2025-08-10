@@ -81,7 +81,7 @@ const RecentItems = () => {
     return (
       <Container
         className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center"
-        data-aos="fade-up"
+        
       >
         <div className="w-24 h-24 rounded-full bg-[#F0EAD6] flex items-center justify-center mb-6">
           <svg
