@@ -33,7 +33,7 @@ const Layout = () => {
           <Navbar />
         </nav>
       </header>
-      <main className="relative min-h-[calc(100vh-764px)]">
+      <main className="relative mt-20 min-h-[calc(100vh-764px)]">
         {loading && <Loader />}
 
         <ScrollToTop />

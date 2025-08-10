@@ -132,7 +132,7 @@ const LostFoundItem = () => {
   }
 
   return (
-    <div className="min-h-screen  pb-20 bg-[#FFFAF0] pt-32 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  pb-20 bg-[#FFFAF0] pt-20 px-4 sm:px-6 lg:px-8">
       <Container>
         <div className="">
           {/* Header Section */}
